@@ -1,10 +1,11 @@
 import Stripe from "stripe";
 import Image from "next/image";
 import { Plus } from "lucide-react";
+import Link from "next/link";
 
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/components/ui/accordion";
 import { productCategories } from "@/constants";
-import { getDefaultPrice } from "@/utils";
+import { getDefaultPrice, paths } from "@/utils";
 import { Button } from "./ui/button";
 
 export default function ProductsList({ products }: { products: Stripe.Product[] }) {
@@ -17,24 +18,26 @@ export default function ProductsList({ products }: { products: Stripe.Product[] 
             <AccordionContent>
               <div className="flex flex-wrap">
                 {products
-                  .filter((p) => p.metadata.category === englishLabel)
-                  .map((p) => {
+                  .filter((product) => product.metadata.category === englishLabel)
+                  .map((product) => {
                     return (
-                      <div className="flex md:w-1/2 w-full py-2 items-center justify-between" key={p.id}>
-                        <div className="flex items-center gap-2">
-                          <Image
-                            alt={p.name}
-                            className="transition-opacity duration-500 ease-in-out"
-                            objectFit="cover"
-                            src={p.images[0]}
-                            width={60}
-                            height={60}
-                          />
-                          {p.name}
-                        </div>
+                      <div className="flex md:w-1/2 w-full py-2 items-center justify-between" key={product.id}>
+                        <Link href={paths.products.href + `/${product.id}`}>
+                          <div className="flex items-center gap-2 cursor-pointer">
+                            <Image
+                              alt={product.name}
+                              className="transition-opacity duration-500 ease-in-out"
+                              objectFit="cover"
+                              src={product.images[0]}
+                              width={60}
+                              height={60}
+                            />
+                            {product.name}
+                          </div>
+                        </Link>
                         <div className="flex items-center gap-2">
                           <div className="text-green-600 font-bold">
-                            {getDefaultPrice(p.default_price)}
+                            {getDefaultPrice(product.default_price)}
                             <span className="text-xs text-gray-500">/κιλό</span>
                           </div>
                           <Button
