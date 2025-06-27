@@ -2,20 +2,32 @@
 
 import Link from "next/link";
 import { Menu } from "lucide-react";
+import { usePathname } from "next/navigation";
+
 import { Sheet, SheetContent, SheetTrigger, SheetHeader, SheetTitle } from "@/components/ui/sheet";
+import { cn, paths } from "@/utils";
 
-const routes = [
-  { url: "/", name: "Home" },
-  { url: "/products", name: "Products" },
-  { url: "/checkout", name: "Checkout" }
-];
+const routes = Object.values(paths);
 
-const Routes = ({ linkClassName = "" }: { linkClassName?: string }) =>
-  routes.map(({ url, name }) => (
-    <Link className={linkClassName} href={url} key={name}>
-      {name}
-    </Link>
-  ));
+const Routes = ({ linkClassName }: { linkClassName: string }) => {
+  const pathname = usePathname();
+
+  return routes.map(({ href, label }) => {
+    const isActive = pathname === href;
+    return (
+      <Link
+        className={cn(
+          "text-base transition-colors",
+          linkClassName,
+          isActive ? "font-bold text-foreground" : "text-muted-foreground"
+        )}
+        href={href}
+        key={label}>
+        {label}
+      </Link>
+    );
+  });
+};
 
 export function Navbar() {
   return (
@@ -44,7 +56,7 @@ export function Navbar() {
 
       {/* Desktop nav */}
       <nav className="hidden space-x-6 md:flex">
-        <Routes />
+        <Routes linkClassName="hover:underline" />
       </nav>
     </header>
   );
