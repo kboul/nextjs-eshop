@@ -1,3 +1,15 @@
-export default function Products() {
-  return <div>Products</div>;
+import ProductsList from "@/components/ProductsList";
+import { stripe } from "@/utils";
+
+export default async function Products() {
+  const products = await stripe.products.list({
+    expand: ["data.default_price"]
+  });
+
+  return (
+    <div>
+      <h1 className="mb-2">Ολα τα προϊόντα</h1>
+      <ProductsList products={products.data} />
+    </div>
+  );
 }

@@ -1,16 +1,9 @@
-import { Button } from "@/components/ui/button";
-
-import { paths, stripe } from "@/utils";
 import Link from "next/link";
 
+import { Button } from "@/components/ui/button";
+import { paths } from "@/utils";
+
 export default async function Home() {
-  const products = await stripe.products.list({
-    expand: ["data.default_price"],
-    limit: 5
-  });
-
-  console.log(products);
-
   return (
     <div>
       <section>
