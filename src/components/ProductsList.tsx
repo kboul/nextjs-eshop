@@ -4,9 +4,9 @@ import { Plus } from "lucide-react";
 import Link from "next/link";
 
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/components/ui/accordion";
+import { Button } from "./ui/button";
 import { productCategories } from "@/constants";
 import { getDefaultPrice, paths } from "@/utils";
-import { Button } from "./ui/button";
 
 export default function ProductsList({ products }: { products: Stripe.Product[] }) {
   return (
