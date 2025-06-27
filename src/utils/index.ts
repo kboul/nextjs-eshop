@@ -6,4 +6,5 @@ function cn(...inputs: ClassValue[]) {
 }
 
 export { cn };
+export * from "./paths";
 export * from "./stripe";
