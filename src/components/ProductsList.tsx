@@ -10,7 +10,9 @@ import { Button } from "./ui/button";
 import { productCategories } from "@/constants";
 import { getDefaultPrice, paths } from "@/utils";
 
-export default function ProductsList({ products }: { products: Stripe.Product[] }) {
+type ProductsListProps = { products: Stripe.Product[] };
+
+export default function ProductsList({ products }: ProductsListProps) {
   return (
     <Accordion type="single" collapsible>
       {productCategories.map(({ englishLabel, greekLabel }) => (
