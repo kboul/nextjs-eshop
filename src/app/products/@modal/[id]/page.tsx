@@ -1,7 +1,7 @@
 import { ProductModalWrapper } from "@/components";
 import { stripe } from "@/utils";
 
-type ProductPageProps = { params: { id: string } };
+type ProductPageProps = { params: Promise<{ id: string }> };
 
 export default async function ProductModal({ params }: ProductPageProps) {
   const { id } = await params;
