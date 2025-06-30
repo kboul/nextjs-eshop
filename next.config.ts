@@ -11,7 +11,12 @@ const nextConfig: NextConfig = {
         pathname: "/**"
       }
     ]
-  }
+  },
+  experimental: {
+    reactCompiler: true // use babel-plugin-react-compiler to avoid rerenders
+  },
+  // Disable React strict mode temporarily to avoid double rendering issues
+  reactStrictMode: false
 };
 
 export default nextConfig;
