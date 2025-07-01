@@ -7,11 +7,14 @@ function cn(...inputs: ClassValue[]) {
 }
 
 function getDefaultPrice(defaultPrice?: string | Stripe.Price | null | undefined) {
-  const price = typeof defaultPrice === "object" && defaultPrice ? defaultPrice.unit_amount : null;
+  const priceUnformatted = typeof defaultPrice === "object" && defaultPrice ? defaultPrice.unit_amount : null;
 
-  return price
-    ? `€${(price / 100).toFixed(2)}` // Stripe stores prices in cents
-    : "Price unavailable";
+  const price = priceUnformatted ? (priceUnformatted / 100).toFixed(2) : "0";
+  return {
+    price,
+    // Stripe stores prices in cents
+    priceWithCurrency: price ? `€${price}` : "Price unavailable"
+  };
 }
 
 export { cn, getDefaultPrice };

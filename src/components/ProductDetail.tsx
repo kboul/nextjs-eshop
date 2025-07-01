@@ -15,7 +15,7 @@ export default function ProductDetail({ product }: ProductDetailProps) {
 
   const cartItem = items.find((item) => item.id === product.id);
   const quantity = cartItem ? cartItem.quantity : 0;
-  const price = getDefaultPrice(product.default_price);
+  const { price, priceWithCurrency } = getDefaultPrice(product.default_price);
 
   return (
     product.images?.[0] && (
@@ -34,7 +34,7 @@ export default function ProductDetail({ product }: ProductDetailProps) {
           <div className="flex flex-col justify-center">
             <div>
               {product.description && <p>{product.description}</p>}
-              {price && <p className="text-lg font-semibold text-gray-900">{price}/κιλό</p>}
+              {priceWithCurrency && <p className="text-lg font-semibold text-gray-900">{priceWithCurrency}/κιλό</p>}
             </div>
 
             <div className="mt-2 flex items-center justify-between">

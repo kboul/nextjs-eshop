@@ -39,7 +39,7 @@ export default function ProductsList({ products }: ProductsListProps) {
 
                       <div className="flex items-center gap-2">
                         <div className="text-green-600 font-bold">
-                          {getDefaultPrice(product.default_price)}
+                          {getDefaultPrice(product.default_price).priceWithCurrency}
                           <span className="text-xs text-gray-500">/κιλό</span>
                         </div>
                         <Button
