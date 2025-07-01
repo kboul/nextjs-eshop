@@ -36,8 +36,10 @@ function ShoppingCartIcon({ cartCount }: { cartCount: number }) {
     <Link href={paths.checkout.href} className="relative">
       <ShoppingCart size={20} />
       {cartCount > 0 && (
-        <span className="absolute bottom-3 left-3">
-          <Badge className="h-5 min-w-5 rounded-full px-1 font-mono tabular-nums" variant="destructive">
+        <span className="absolute md:bottom-2 bottom-3 left-3">
+          <Badge
+            className="md:h-5 md:min-w-5 h-4 min-w-4 rounded-full px-1 font-mono tabular-nums"
+            variant="destructive">
             {cartCount}
           </Badge>
         </span>
