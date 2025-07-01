@@ -1,11 +1,13 @@
 "use client";
 
 import Link from "next/link";
-import { Menu } from "lucide-react";
+import { Menu, ShoppingCart } from "lucide-react";
 import { usePathname } from "next/navigation";
 
+import { Badge } from "./ui/badge";
 import { Sheet, SheetContent, SheetTrigger, SheetHeader, SheetTitle } from "@/components/ui/sheet";
 import { cn, paths } from "@/utils";
+import { useCartStore } from "@/store";
 
 const routes = Object.values(paths);
 
@@ -29,7 +31,26 @@ const Routes = ({ linkClassName }: { linkClassName: string }) => {
   });
 };
 
+function ShoppingCartIcon({ cartCount }: { cartCount: number }) {
+  return (
+    <Link href={paths.checkout.href} className="relative">
+      <ShoppingCart size={20} />
+      {cartCount > 0 && (
+        <span className="absolute bottom-3 left-3">
+          <Badge className="h-5 min-w-5 rounded-full px-1 font-mono tabular-nums" variant="destructive">
+            {cartCount}
+          </Badge>
+        </span>
+      )}
+    </Link>
+  );
+}
+
 export function Navbar() {
+  const { items } = useCartStore();
+
+  const cartCount = items.reduce((prevValue, currentItem) => prevValue + currentItem.quantity, 0);
+
   return (
     <header className="flex items-center justify-between px-4 py-3 md:px-8">
       <Link href="/">
@@ -39,7 +60,8 @@ export function Navbar() {
       {/* Burger button only visible on mobile */}
       <Sheet>
         <SheetTrigger asChild>
-          <button className="md:hidden">
+          <button className="md:hidden flex gap-5">
+            <ShoppingCartIcon cartCount={cartCount} />
             <Menu size={24} className="cursor-pointer" />
           </button>
         </SheetTrigger>
@@ -57,6 +79,9 @@ export function Navbar() {
       {/* Desktop nav */}
       <nav className="hidden space-x-6 md:flex">
         <Routes linkClassName="hover:underline" />
+        <div className="flex items-center space-x-4">
+          <ShoppingCartIcon cartCount={cartCount} />
+        </div>
       </nav>
     </header>
   );
