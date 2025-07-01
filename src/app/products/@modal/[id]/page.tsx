@@ -10,7 +10,11 @@ export default async function ProductModal({ params }: ProductPageProps) {
     expand: ["default_price"]
   });
 
-  const { name, metadata, images, description, default_price } = allProductProps;
+  const { id: productId, name, metadata, images, description, default_price } = allProductProps;
 
-  return <ProductModalWrapper product={{ name, metadata, images, description, default_price }} />;
+  return (
+    <ProductModalWrapper
+      product={{ id: productId, name, metadata, images, description, defaultPrice: default_price }}
+    />
+  );
 }

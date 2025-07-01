@@ -6,8 +6,9 @@ import Stripe from "stripe";
 import ProductDetail from "./ProductDetail";
 import { ResponsiveDialog } from "./ui/responsive-dialog";
 import { paths } from "@/utils";
+import { ProductDialog } from "@/types";
 
-type ProductModalWrapperProps = { product: Partial<Stripe.Product> };
+type ProductModalWrapperProps = { product: ProductDialog };
 
 export function ProductModalWrapper({ product }: ProductModalWrapperProps) {
   const pathname = usePathname();

@@ -2,15 +2,23 @@
 
 import Image from "next/image";
 import Stripe from "stripe";
+import { Minus, Plus } from "lucide-react";
 
 import { getDefaultPrice } from "@/utils";
 import { Button } from "./ui/button";
-import { Minus, Plus } from "lucide-react";
+import { useCartStore } from "@/store";
+import { ProductDialog } from "@/types";
 
-type ProductDetailProps = { product: Partial<Stripe.Product> };
+type ProductDetailProps = { product: ProductDialog };
 
 export default function ProductDetail({ product }: ProductDetailProps) {
-  const price = getDefaultPrice(product.default_price);
+  const { items, addItem, removeItem } = useCartStore();
+
+  const cartItem = items.find((item) => item.id === product.id);
+  const quantity = cartItem ? cartItem.quantity : 0;
+  console.log({ cartItem, quantity, product });
+  const price = getDefaultPrice(product.defaultPrice);
+
   return (
     product.images?.[0] && (
       <div className="relative w-full">
@@ -33,11 +41,23 @@ export default function ProductDetail({ product }: ProductDetailProps) {
 
             <div className="mt-2 flex items-center justify-between">
               <div className="flex items-center gap-2">
-                <Button variant="outline" size="icon" onClick={() => {}}>
+                <Button className="cursor-pointer" onClick={() => removeItem(product.id)} size="icon" variant="outline">
                   <Minus className="h-4 w-4" />
                 </Button>
-                <span className="w-8 text-center">0</span>
-                <Button variant="outline" size="icon" onClick={() => {}}>
+                <span className="w-8 text-center">{quantity}</span>
+                <Button
+                  className="cursor-pointer"
+                  onClick={() =>
+                    addItem({
+                      id: product.id,
+                      name: product.name,
+                      price: Number(price),
+                      imageUrl: product.images ? product.images[0] : null,
+                      quantity: 1
+                    })
+                  }
+                  size="icon"
+                  variant="outline">
                   <Plus className="h-4 w-4" />
                 </Button>
               </div>
