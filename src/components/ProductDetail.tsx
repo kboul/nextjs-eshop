@@ -7,17 +7,15 @@ import { Minus, Plus } from "lucide-react";
 import { getDefaultPrice } from "@/utils";
 import { Button } from "./ui/button";
 import { useCartStore } from "@/store";
-import { ProductDialog } from "@/types";
 
-type ProductDetailProps = { product: ProductDialog };
+type ProductDetailProps = { product: Stripe.Product };
 
 export default function ProductDetail({ product }: ProductDetailProps) {
   const { items, addItem, removeItem } = useCartStore();
 
   const cartItem = items.find((item) => item.id === product.id);
   const quantity = cartItem ? cartItem.quantity : 0;
-  console.log({ cartItem, quantity, product });
-  const price = getDefaultPrice(product.defaultPrice);
+  const price = getDefaultPrice(product.default_price);
 
   return (
     product.images?.[0] && (

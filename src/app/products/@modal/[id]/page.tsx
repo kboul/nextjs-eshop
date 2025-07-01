@@ -1,20 +1,17 @@
 import { ProductModalWrapper } from "@/components";
 import { stripe } from "@/utils";
+import Stripe from "stripe";
 
 type ProductPageProps = { params: Promise<{ id: string }> };
 
 export default async function ProductModal({ params }: ProductPageProps) {
   const { id } = await params;
 
-  const allProductProps = await stripe.products.retrieve(id, {
+  const product = await stripe.products.retrieve(id, {
     expand: ["default_price"]
   });
 
-  const { id: productId, name, metadata, images, description, default_price } = allProductProps;
+  const plainProduct: Stripe.Product = JSON.parse(JSON.stringify(product));
 
-  return (
-    <ProductModalWrapper
-      product={{ id: productId, name, metadata, images, description, defaultPrice: default_price }}
-    />
-  );
+  return <ProductModalWrapper product={plainProduct} />;
 }
