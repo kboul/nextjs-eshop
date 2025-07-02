@@ -14,7 +14,8 @@ type CartProduct = {
 
 type CartStore = {
   products: CartProduct[];
-  addProduct: (product: CartProduct) => void;
+  addProductQuantity: (product: CartProduct) => void;
+  removeProductQuantity: (id: string) => void;
   removeProduct: (id: string) => void;
   clearCart: () => void;
 };
@@ -25,7 +26,7 @@ export const useCartStore = create<CartStore>()(
   persist(
     (set) => ({
       products: [],
-      addProduct: (product) =>
+      addProductQuantity: (product) =>
         set((state) => {
           const existing = state.products.find(({ id }) => id === product.id);
           if (existing) {
@@ -39,7 +40,7 @@ export const useCartStore = create<CartStore>()(
           }
           return { products: [...state.products, product] };
         }),
-      removeProduct: (id) =>
+      removeProductQuantity: (id) =>
         set((state) => {
           return {
             products: state.products.map((product) =>
@@ -47,6 +48,12 @@ export const useCartStore = create<CartStore>()(
                 ? { ...product, quantity: product.quantity > 0 ? product.quantity - quantityToAddSubtract : 0 }
                 : product
             )
+          };
+        }),
+      removeProduct: (id) =>
+        set((state) => {
+          return {
+            products: state.products.filter((product) => product.id !== id)
           };
         }),
       clearCart: () => set(() => ({ products: [] }))

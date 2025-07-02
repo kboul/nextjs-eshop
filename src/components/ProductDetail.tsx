@@ -12,7 +12,7 @@ import { quantityToAddSubtract } from "@/constants";
 type ProductDetailProps = { product: Stripe.Product };
 
 export default function ProductDetail({ product }: ProductDetailProps) {
-  const { products, addProduct, removeProduct } = useCartStore();
+  const { products, addProductQuantity, removeProductQuantity } = useCartStore();
 
   const cartItem = products.find(({ id }) => id === product.id);
   const quantity = cartItem ? cartItem.quantity : 0;
@@ -40,13 +40,13 @@ export default function ProductDetail({ product }: ProductDetailProps) {
 
             <div className="mt-2 flex items-center justify-between">
               <div className="flex items-center gap-2">
-                <Button onClick={() => removeProduct(product.id)} size="icon" variant="outline">
+                <Button onClick={() => removeProductQuantity(product.id)} size="icon" variant="outline">
                   <Minus className="h-4 w-4" />
                 </Button>
                 <span className="w-8 text-center">{quantity}</span>
                 <Button
                   onClick={() =>
-                    addProduct({
+                    addProductQuantity({
                       id: product.id,
                       name: product.name,
                       price: Number(price),

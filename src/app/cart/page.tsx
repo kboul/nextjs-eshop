@@ -10,7 +10,7 @@ import { paths } from "@/utils";
 import { quantityToAddSubtract } from "@/constants";
 
 export default function CartPage() {
-  const { products, addProduct, removeProduct, clearCart } = useCartStore();
+  const { products, addProductQuantity, removeProductQuantity, removeProduct, clearCart } = useCartStore();
 
   const total = products.reduce((prevValue, currentItem) => prevValue + currentItem.price * currentItem.quantity, 0);
 
@@ -55,13 +55,13 @@ export default function CartPage() {
 
                     <div className="mt-4 flex items-center justify-between">
                       <div className="flex items-center gap-2">
-                        <Button onClick={() => removeProduct(product.id)} size="icon" variant="outline">
+                        <Button onClick={() => removeProductQuantity(product.id)} size="icon" variant="outline">
                           <Minus className="h-4 w-4" />
                         </Button>
                         <span className="w-8 text-center">{product.quantity}</span>
                         <Button
                           onClick={() =>
-                            addProduct({
+                            addProductQuantity({
                               id: product.id,
                               name: product.name,
                               price: Number(product.price),
