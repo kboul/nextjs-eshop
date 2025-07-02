@@ -1,7 +1,7 @@
 import Link from "next/link";
 
 import { Button } from "@/components/ui/button";
-import { paths } from "@/utils";
+import { paths } from "@/constants";
 
 export default async function HomePage() {
   return (

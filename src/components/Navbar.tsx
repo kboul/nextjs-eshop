@@ -6,8 +6,9 @@ import { usePathname } from "next/navigation";
 
 import { Badge } from "./ui/badge";
 import { Sheet, SheetContent, SheetTrigger, SheetHeader, SheetTitle } from "@/components/ui/sheet";
-import { cn, paths } from "@/utils";
 import { useCartStore } from "@/store";
+import { cn } from "@/utils";
+import { paths } from "@/constants";
 
 const routes = Object.values(paths);
 

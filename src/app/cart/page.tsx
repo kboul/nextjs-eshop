@@ -6,8 +6,7 @@ import { Minus, Plus, Trash2 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import { useCartStore } from "@/store";
-import { paths } from "@/utils";
-import { quantityToAddSubtract } from "@/constants";
+import { quantityToAddSubtract, paths } from "@/constants";
 
 export default function CartPage() {
   const { products, addProductQuantity, removeProductQuantity, removeProduct, clearCart } = useCartStore();
