@@ -4,4 +4,6 @@ const productCategories = [
   { englishLabel: "beef", greekLabel: "Μοσχάρι" }
 ];
 
-export { productCategories };
+const quantityToAddSubtract = 0.5;
+
+export { quantityToAddSubtract, productCategories };

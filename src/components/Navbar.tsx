@@ -33,11 +33,13 @@ const Routes = ({ linkClassName }: { linkClassName: string }) => {
 
 function ShoppingCartIcon({ cartCount }: { cartCount: number }) {
   return (
-    <Link href={paths.checkout.href} className="relative">
+    <Link href={paths.cart.href} className="relative">
       <ShoppingCart size={20} />
       {cartCount > 0 && (
-        <span className="absolute bottom-3 left-3">
-          <Badge className="h-5 min-w-5 rounded-full px-1 font-mono tabular-nums" variant="destructive">
+        <span className="absolute md:bottom-2 bottom-3 left-3">
+          <Badge
+            className="md:h-5 md:min-w-5 h-4 min-w-4 rounded-full px-1 font-mono tabular-nums"
+            variant="destructive">
             {cartCount}
           </Badge>
         </span>
@@ -47,14 +49,14 @@ function ShoppingCartIcon({ cartCount }: { cartCount: number }) {
 }
 
 export function Navbar() {
-  const { items } = useCartStore();
+  const { products } = useCartStore();
 
-  const cartCount = items.reduce((prevValue, currentItem) => prevValue + currentItem.quantity, 0);
+  const cartCount = products.reduce((prevValue, currentItem) => prevValue + currentItem.quantity, 0);
 
   return (
     <header className="flex items-center justify-between px-4 py-3 md:px-8">
       <Link href="/">
-        <h1 className="text-xl font-bold">My Ecomerce</h1>
+        <h1 className="text-xl font-bold">Το Ηλεκτρονικό Μου Κατάστημα</h1>
       </Link>
 
       {/* Burger button only visible on mobile */}
@@ -68,7 +70,7 @@ export function Navbar() {
 
         <SheetContent side="left" className="w-64">
           <SheetHeader>
-            <SheetTitle>Menu</SheetTitle>
+            <SheetTitle>Μενού</SheetTitle>
           </SheetHeader>
           <nav className="m-4 flex flex-col space-y-4">
             <Routes linkClassName="text-lg" />

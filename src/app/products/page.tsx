@@ -1,7 +1,7 @@
 import ProductsList from "@/components/ProductsList";
 import { stripe } from "@/utils";
 
-export default async function Products() {
+export default async function ProductsPage() {
   const products = await stripe.products.list({
     expand: ["data.default_price"]
   });
