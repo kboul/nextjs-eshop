@@ -21,7 +21,7 @@ export default function ProductDetail({ product }: ProductDetailProps) {
     product.images?.[0] && (
       <div className="relative w-full">
         <div className="flex gap-2">
-          <div className="flex justify-center m-6">
+          <div className="flex justify-center m-6 ml-0">
             <Image
               alt={product?.name ?? ""}
               className="group-hover:opacity-90 transition-opacity duration-300 rounded"

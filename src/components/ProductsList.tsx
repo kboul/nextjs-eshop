@@ -29,7 +29,6 @@ export default function ProductsList({ products }: ProductsListProps) {
                         <Image
                           alt={product.name}
                           className="transition-opacity duration-500 ease-in-out"
-                          objectFit="cover"
                           src={product.images[0]}
                           width={60}
                           height={60}
