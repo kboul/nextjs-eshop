@@ -3,21 +3,21 @@
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import { useCartStore } from "@/store";
+import { paths } from "@/utils";
 import { CreditCard, Minus, Plus, Trash2 } from "lucide-react";
 import Image from "next/image";
 
-export default function CheckoutPage() {
+export default function CartPage() {
   const { items, addItem, removeItem, clearCart } = useCartStore();
 
   const total = items.reduce((prevValue, currentItem) => prevValue + currentItem.price * currentItem.quantity, 0);
-  console.log({ items, total });
 
   if (total === 0 || items.length === 0) return <h1>Το καλάθι σας ειναι άδειο</h1>;
   return (
     <div className="mx-auto w-full max-w-7xl p-6">
       <div className="grid grid-cols-1 gap-8">
         <div>
-          <h1 className="text-2xl font-semibold">Ολοκλήρωση αγοράς</h1>
+          <h1 className="text-2xl font-semibold">{paths.cart.label}</h1>
           <p className="text-muted-foreground">
             {items.length} προϊόν{items.length === 1 ? "" : "τα"} στο καλάθι σας
           </p>
@@ -31,11 +31,11 @@ export default function CheckoutPage() {
                   {/* Product Image */}
                   <div className="relative h-auto w-full md:w-32">
                     <Image
-                      src={item.imageUrl ?? ""}
                       alt={item.name}
+                      className="h-full w-full object-cover md:w-32"
+                      src={item.imageUrl ?? ""}
                       width={500}
                       height={500}
-                      className="h-full w-full object-cover md:w-32"
                     />
                   </div>
 
