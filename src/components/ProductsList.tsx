@@ -38,13 +38,13 @@ export default function ProductsList({ products }: ProductsListProps) {
                       </div>
 
                       <div className="flex items-center gap-2">
-                        <div className="text-green-600 font-bold">
+                        <div className="font-bold">
                           {getDefaultPrice(product.default_price).priceWithCurrency}
                           <span className="text-xs text-gray-500">/κιλό</span>
                         </div>
                         <Button
                           size="sm"
-                          className="bg-green-600 hover:bg-green-700 text-white shadow-sm hover:shadow-md transition-all duration-200 rounded-full w-8 h-8 p-0 mr-4 cursor-pointer">
+                          className="text-white shadow-sm hover:shadow-md transition-all duration-200 rounded-full w-8 h-8 p-0 mr-4">
                           <Link href={paths.products.href + `/${product.id}`} scroll={false}>
                             <Plus className="w-4 h-4" />
                           </Link>

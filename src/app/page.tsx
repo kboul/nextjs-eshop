@@ -3,7 +3,7 @@ import Link from "next/link";
 import { Button } from "@/components/ui/button";
 import { paths } from "@/utils";
 
-export default async function Home() {
+export default async function HomePage() {
   return (
     <section>
       <h2>Καλωσήρθατε στο ηλεκτρονικό κατάστημα μας!</h2>

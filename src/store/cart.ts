@@ -4,6 +4,7 @@ import { persist } from "zustand/middleware";
 type CartItem = {
   id: string;
   name: string;
+  description?: string;
   price: number;
   imageUrl: string | null;
   quantity: number;
@@ -13,7 +14,7 @@ type CartStore = {
   items: CartItem[];
   addItem: (item: CartItem) => void;
   removeItem: (id: string) => void;
-  clearItem: () => void;
+  clearCart: () => void;
 };
 
 export type { CartItem, CartStore };
@@ -44,7 +45,7 @@ export const useCartStore = create<CartStore>()(
             )
           };
         }),
-      clearItem: () => set(() => ({ items: [] }))
+      clearCart: () => set(() => ({ items: [] }))
     }),
     { name: "cart" }
   )

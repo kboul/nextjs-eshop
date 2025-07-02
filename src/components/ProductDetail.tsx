@@ -39,12 +39,11 @@ export default function ProductDetail({ product }: ProductDetailProps) {
 
             <div className="mt-2 flex items-center justify-between">
               <div className="flex items-center gap-2">
-                <Button className="cursor-pointer" onClick={() => removeItem(product.id)} size="icon" variant="outline">
+                <Button onClick={() => removeItem(product.id)} size="icon" variant="outline">
                   <Minus className="h-4 w-4" />
                 </Button>
                 <span className="w-8 text-center">{quantity}</span>
                 <Button
-                  className="cursor-pointer"
                   onClick={() =>
                     addItem({
                       id: product.id,
