@@ -11,9 +11,9 @@ import { useCartStore } from "@/store";
 type ProductDetailProps = { product: Stripe.Product };
 
 export default function ProductDetail({ product }: ProductDetailProps) {
-  const { items, addItem, removeItem } = useCartStore();
+  const { products, addProduct, removeProduct } = useCartStore();
 
-  const cartItem = items.find((item) => item.id === product.id);
+  const cartItem = products.find(({ id }) => id === product.id);
   const quantity = cartItem ? cartItem.quantity : 0;
   const { price, priceWithCurrency } = getDefaultPrice(product.default_price);
 
@@ -39,13 +39,13 @@ export default function ProductDetail({ product }: ProductDetailProps) {
 
             <div className="mt-2 flex items-center justify-between">
               <div className="flex items-center gap-2">
-                <Button onClick={() => removeItem(product.id)} size="icon" variant="outline">
+                <Button onClick={() => removeProduct(product.id)} size="icon" variant="outline">
                   <Minus className="h-4 w-4" />
                 </Button>
                 <span className="w-8 text-center">{quantity}</span>
                 <Button
                   onClick={() =>
-                    addItem({
+                    addProduct({
                       id: product.id,
                       name: product.name,
                       price: Number(price),

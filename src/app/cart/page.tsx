@@ -9,32 +9,32 @@ import { useCartStore } from "@/store";
 import { paths } from "@/utils";
 
 export default function CartPage() {
-  const { items, addItem, removeItem, clearCart } = useCartStore();
+  const { products, addProduct, removeProduct, clearCart } = useCartStore();
 
-  const total = items.reduce((prevValue, currentItem) => prevValue + currentItem.price * currentItem.quantity, 0);
+  const total = products.reduce((prevValue, currentItem) => prevValue + currentItem.price * currentItem.quantity, 0);
 
-  if (total === 0 || items.length === 0) return <h1>Το καλάθι σας ειναι άδειο</h1>;
+  if (total === 0 || products.length === 0) return <h1>Το καλάθι σας ειναι άδειο</h1>;
   return (
     <div className="mx-auto w-full max-w-7xl p-6">
       <div className="grid grid-cols-1 gap-8">
         <div>
           <h1 className="text-2xl font-semibold">{paths.cart.label}</h1>
           <p className="text-muted-foreground">
-            {items.length} προϊόν{items.length === 1 ? "" : "τα"} στο καλάθι σας
+            {products.length} προϊόν{products.length === 1 ? "" : "τα"} στο καλάθι σας
           </p>
         </div>
 
         <div className="space-y-4">
-          {items.map((item) => (
-            <Card key={item.id} className="overflow-hidden p-0">
+          {products.map((product) => (
+            <Card key={product.id} className="overflow-hidden p-0">
               <CardContent className="p-0">
                 <div className="flex h-full flex-col md:flex-row">
                   {/* Product Image */}
                   <div className="relative h-auto w-full md:w-32">
                     <Image
-                      alt={item.name}
+                      alt={product.name}
                       className="h-full w-full object-cover md:w-32"
-                      src={item.imageUrl ?? ""}
+                      src={product.imageUrl ?? ""}
                       width={500}
                       height={500}
                     />
@@ -44,27 +44,27 @@ export default function CartPage() {
                   <div className="flex-1 p-6 pb-3">
                     <div className="flex justify-between">
                       <div>
-                        <h3 className="font-medium">{item.name}</h3>
-                        {item.description && <p>{item.description}</p>}
+                        <h3 className="font-medium">{product.name}</h3>
+                        {product.description && <p>{product.description}</p>}
                       </div>
-                      <Button variant="ghost" size="icon" onClick={() => removeItem(item.id)}>
+                      <Button variant="ghost" size="icon" onClick={() => removeProduct(product.id)}>
                         <Trash2 className="h-4 w-4" />
                       </Button>
                     </div>
 
                     <div className="mt-4 flex items-center justify-between">
                       <div className="flex items-center gap-2">
-                        <Button onClick={() => removeItem(item.id)} size="icon" variant="outline">
+                        <Button onClick={() => removeProduct(product.id)} size="icon" variant="outline">
                           <Minus className="h-4 w-4" />
                         </Button>
-                        <span className="w-8 text-center">{item.quantity}</span>
+                        <span className="w-8 text-center">{product.quantity}</span>
                         <Button
                           onClick={() =>
-                            addItem({
-                              id: item.id,
-                              name: item.name,
-                              price: Number(item.price),
-                              imageUrl: item.imageUrl ?? null,
+                            addProduct({
+                              id: product.id,
+                              name: product.name,
+                              price: Number(product.price),
+                              imageUrl: product.imageUrl ?? null,
                               quantity: 1
                             })
                           }
@@ -75,7 +75,7 @@ export default function CartPage() {
                       </div>
 
                       <div className="text-right">
-                        <div className="font-medium">€{(item.price * item.quantity).toFixed(2)}</div>
+                        <div className="font-medium">€{(product.price * product.quantity).toFixed(2)}</div>
                       </div>
                     </div>
                   </div>

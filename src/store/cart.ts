@@ -1,7 +1,7 @@
 import { create } from "zustand";
 import { persist } from "zustand/middleware";
 
-type CartItem = {
+type CartProduct = {
   id: string;
   name: string;
   description?: string;
@@ -11,41 +11,41 @@ type CartItem = {
 };
 
 type CartStore = {
-  items: CartItem[];
-  addItem: (item: CartItem) => void;
-  removeItem: (id: string) => void;
+  products: CartProduct[];
+  addProduct: (product: CartProduct) => void;
+  removeProduct: (id: string) => void;
   clearCart: () => void;
 };
 
-export type { CartItem, CartStore };
+export type { CartProduct, CartStore };
 
 export const useCartStore = create<CartStore>()(
   persist(
     (set) => ({
-      items: [],
-      addItem: (item) =>
+      products: [],
+      addProduct: (product) =>
         set((state) => {
-          const existing = state.items.find(({ id }) => id === item.id);
+          const existing = state.products.find(({ id }) => id === product.id);
           if (existing) {
             return {
-              items: state.items.map((stateItem) =>
-                stateItem.id === item.id ? { ...stateItem, quantity: stateItem.quantity + item.quantity } : stateItem
+              products: state.products.map((stateProduct) =>
+                stateProduct.id === product.id
+                  ? { ...stateProduct, quantity: stateProduct.quantity + product.quantity }
+                  : stateProduct
               )
             };
           }
-          return { items: [...state.items, item] };
+          return { products: [...state.products, product] };
         }),
-      removeItem: (id) =>
+      removeProduct: (id) =>
         set((state) => {
           return {
-            items: state.items.map((stateItem) =>
-              stateItem.id === id
-                ? { ...stateItem, quantity: stateItem.quantity > 0 ? stateItem.quantity - 1 : 0 }
-                : stateItem
+            products: state.products.map((product) =>
+              product.id === id ? { ...product, quantity: product.quantity > 0 ? product.quantity - 1 : 0 } : product
             )
           };
         }),
-      clearCart: () => set(() => ({ items: [] }))
+      clearCart: () => set(() => ({ products: [] }))
     }),
     { name: "cart" }
   )

@@ -49,9 +49,9 @@ function ShoppingCartIcon({ cartCount }: { cartCount: number }) {
 }
 
 export function Navbar() {
-  const { items } = useCartStore();
+  const { products } = useCartStore();
 
-  const cartCount = items.reduce((prevValue, currentItem) => prevValue + currentItem.quantity, 0);
+  const cartCount = products.reduce((prevValue, currentItem) => prevValue + currentItem.quantity, 0);
 
   return (
     <header className="flex items-center justify-between px-4 py-3 md:px-8">
