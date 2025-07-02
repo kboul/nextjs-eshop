@@ -4,9 +4,10 @@ import Image from "next/image";
 import Stripe from "stripe";
 import { Minus, Plus } from "lucide-react";
 
-import { getDefaultPrice } from "@/utils";
 import { Button } from "./ui/button";
+import { getDefaultPrice } from "@/utils";
 import { useCartStore } from "@/store";
+import { quantityToAddSubtract } from "@/constants";
 
 type ProductDetailProps = { product: Stripe.Product };
 
@@ -50,7 +51,7 @@ export default function ProductDetail({ product }: ProductDetailProps) {
                       name: product.name,
                       price: Number(price),
                       imageUrl: product.images ? product.images[0] : null,
-                      quantity: 1
+                      quantity: quantityToAddSubtract
                     })
                   }
                   size="icon"

@@ -7,6 +7,7 @@ import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import { useCartStore } from "@/store";
 import { paths } from "@/utils";
+import { quantityToAddSubtract } from "@/constants";
 
 export default function CartPage() {
   const { products, addProduct, removeProduct, clearCart } = useCartStore();
@@ -65,7 +66,7 @@ export default function CartPage() {
                               name: product.name,
                               price: Number(product.price),
                               imageUrl: product.imageUrl ?? null,
-                              quantity: 1
+                              quantity: quantityToAddSubtract
                             })
                           }
                           size="icon"
@@ -76,6 +77,9 @@ export default function CartPage() {
 
                       <div className="text-right">
                         <div className="font-medium">€{(product.price * product.quantity).toFixed(2)}</div>
+                        <div className="text-muted-foreground text-sm ">
+                          {product.quantity} &times; {product.price}€/κιλό
+                        </div>
                       </div>
                     </div>
                   </div>

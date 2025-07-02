@@ -1,6 +1,8 @@
 import { create } from "zustand";
 import { persist } from "zustand/middleware";
 
+import { quantityToAddSubtract } from "@/constants";
+
 type CartProduct = {
   id: string;
   name: string;
@@ -41,7 +43,9 @@ export const useCartStore = create<CartStore>()(
         set((state) => {
           return {
             products: state.products.map((product) =>
-              product.id === id ? { ...product, quantity: product.quantity > 0 ? product.quantity - 1 : 0 } : product
+              product.id === id
+                ? { ...product, quantity: product.quantity > 0 ? product.quantity - quantityToAddSubtract : 0 }
+                : product
             )
           };
         }),
