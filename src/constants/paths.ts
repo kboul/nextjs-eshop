@@ -5,4 +5,6 @@ const paths = {
   checkout: { href: "/checkout", label: "Ολοκλήρωση παραγγελίας" }
 };
 
-export { paths };
+const pathsWitoutCart = Object.fromEntries(Object.entries(paths).filter(([key]) => key !== "cart"));
+
+export { paths, pathsWitoutCart };

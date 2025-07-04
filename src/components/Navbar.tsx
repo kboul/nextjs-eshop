@@ -8,9 +8,9 @@ import { Badge } from "./ui/badge";
 import { Sheet, SheetContent, SheetTrigger, SheetHeader, SheetTitle } from "@/components/ui/sheet";
 import { useCartStore } from "@/store";
 import { cn } from "@/utils";
-import { paths } from "@/constants";
+import { paths, pathsWitoutCart } from "@/constants";
 
-const routes = Object.values(paths);
+const routes = Object.values(pathsWitoutCart);
 
 const Routes = ({ linkClassName }: { linkClassName: string }) => {
   const pathname = usePathname();
