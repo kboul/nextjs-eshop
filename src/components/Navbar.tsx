@@ -57,7 +57,7 @@ export function Navbar() {
   return (
     <header className="flex items-center justify-between px-4 py-3 md:px-8">
       <Link href="/">
-        <h1 className="text-xl font-bold">Το Ηλεκτρονικό Μου Κατάστημα</h1>
+        <h1 className="text-xl font-bold">My Market</h1>
       </Link>
 
       {/* Burger button only visible on mobile */}
