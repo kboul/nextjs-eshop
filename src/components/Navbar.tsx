@@ -63,7 +63,7 @@ export function Navbar() {
       {/* Burger button only visible on mobile */}
       <Sheet>
         <SheetTrigger asChild>
-          <button className="md:hidden flex gap-5">
+          <button className="md:hidden flex gap-6">
             <ShoppingCartIcon cartCount={cartCount} />
             <Menu size={24} className="cursor-pointer" />
           </button>

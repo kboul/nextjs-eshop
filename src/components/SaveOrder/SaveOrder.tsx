@@ -6,13 +6,13 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
 import { toast } from "sonner";
 
-import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "@/components/ui/form";
+import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "../ui/form";
+import { Button } from "../ui/button";
 import { Input } from "../ui/input";
 import { formSchema } from "./form";
-import { Button } from "../ui/button";
 import { useCartStore } from "@/store";
 
-export function OrderForm() {
+export function SaveOrder() {
   const { products } = useCartStore();
 
   const [loading, setLoading] = useState(false);
@@ -34,7 +34,7 @@ export function OrderForm() {
       const data = await res.json();
       if (!res.ok) toast(data.error || "Something went wrong");
 
-      toast(`Order created with id: ${data.quoteId}`);
+      toast(`Παραγγελία δημιουργήθηκε και καταχωρήθηκε με id: ${data.quoteId}`);
     } catch (error) {
       console.error("Form submission error", error);
       toast.error("Failed to submit the form. Please try again.");

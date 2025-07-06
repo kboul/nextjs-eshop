@@ -1,5 +1,5 @@
 export * from "./Navbar";
-export * from "./OrderForm/OrderForm";
+export * from "./SaveOrder/SaveOrder";
 export * from "./ProductDetail";
 export * from "./ProductsList";
 export * from "./ProductModalWrapper";
