@@ -1,13 +1,13 @@
 "use client";
 
 import Image from "next/image";
+import Link from "next/link";
 import { Minus, Plus, Trash2 } from "lucide-react";
 
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import { useCartStore } from "@/store";
-import { paths } from "@/utils";
-import { quantityToAddSubtract } from "@/constants";
+import { quantityToAddSubtract, paths } from "@/constants";
 
 export default function CartPage() {
   const { products, addProductQuantity, removeProductQuantity, removeProduct, clearCart } = useCartStore();
@@ -96,7 +96,9 @@ export default function CartPage() {
       </div>
 
       <div className="mt-4 space-y-2">
-        <Button className="w-full">Ολοκλήρωση παραγγελίας</Button>
+        <Button className="w-full">
+          <Link href={paths.checkout.href}>{paths.checkout.label}</Link>
+        </Button>
 
         <Button className="w-full" onClick={clearCart}>
           Καθαρισμός καλαθιού

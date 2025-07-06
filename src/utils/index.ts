@@ -18,5 +18,4 @@ function getDefaultPrice(defaultPrice?: string | Stripe.Price | null | undefined
 }
 
 export { cn, getDefaultPrice };
-export * from "./paths";
 export * from "./stripe";

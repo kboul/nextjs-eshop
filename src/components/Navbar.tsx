@@ -6,10 +6,11 @@ import { usePathname } from "next/navigation";
 
 import { Badge } from "./ui/badge";
 import { Sheet, SheetContent, SheetTrigger, SheetHeader, SheetTitle } from "@/components/ui/sheet";
-import { cn, paths } from "@/utils";
 import { useCartStore } from "@/store";
+import { cn } from "@/utils";
+import { paths, pathsWitoutCart } from "@/constants";
 
-const routes = Object.values(paths);
+const routes = Object.values(pathsWitoutCart);
 
 const Routes = ({ linkClassName }: { linkClassName: string }) => {
   const pathname = usePathname();
@@ -56,13 +57,13 @@ export function Navbar() {
   return (
     <header className="flex items-center justify-between px-4 py-3 md:px-8">
       <Link href="/">
-        <h1 className="text-xl font-bold">Το Ηλεκτρονικό Μου Κατάστημα</h1>
+        <h1 className="text-xl font-bold">My Market</h1>
       </Link>
 
       {/* Burger button only visible on mobile */}
       <Sheet>
         <SheetTrigger asChild>
-          <button className="md:hidden flex gap-5">
+          <button className="md:hidden flex gap-6">
             <ShoppingCartIcon cartCount={cartCount} />
             <Menu size={24} className="cursor-pointer" />
           </button>

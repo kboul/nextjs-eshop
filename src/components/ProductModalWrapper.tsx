@@ -1,11 +1,11 @@
 "use client";
 
 import { redirect, usePathname } from "next/navigation";
-
 import Stripe from "stripe";
+
 import ProductDetail from "./ProductDetail";
 import { ResponsiveDialog } from "./ui/responsive-dialog";
-import { paths } from "@/utils";
+import { paths } from "@/constants";
 
 type ProductModalWrapperProps = { product: Stripe.Product };
 

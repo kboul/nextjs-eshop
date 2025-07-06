@@ -7,8 +7,8 @@ import Link from "next/link";
 
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/components/ui/accordion";
 import { Button } from "./ui/button";
-import { productCategories } from "@/constants";
-import { getDefaultPrice, paths } from "@/utils";
+import { getDefaultPrice } from "@/utils";
+import { paths, productCategories } from "@/constants";
 
 type ProductsListProps = { products: Stripe.Product[] };
 
