@@ -29,10 +29,7 @@ export async function POST(request: NextRequest) {
       line_items: products.map((item: any) => ({
         price_data: {
           currency: "eur",
-          product_data: {
-            name: item.name,
-            metadata: { original_product_id: item.id }
-          },
+          product: item.id,
           unit_amount: Math.round(item.price * item.quantity * 100) // Total price in cents
         },
         quantity: 1 // Always 1 since we're calculating total price above
@@ -41,6 +38,7 @@ export async function POST(request: NextRequest) {
         customerName: `${name} ${lastName}`,
         shopName,
         tin,
+        phoneNumber,
         address: JSON.stringify(address)
       }
     });

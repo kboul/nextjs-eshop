@@ -5,15 +5,18 @@ import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
 import { toast } from "sonner";
+import { useRouter } from "next/navigation"; // Note: next/navigation for App Router
 
 import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "../ui/form";
 import { Button } from "../ui/button";
 import { Input } from "../ui/input";
 import { formSchema } from "./form";
 import { useCartStore } from "@/store";
+import { paths } from "@/constants";
 
 export function SaveOrder() {
-  const { products } = useCartStore();
+  const { products, clearCart } = useCartStore();
+  const router = useRouter();
 
   const [loading, setLoading] = useState(false);
 
@@ -32,12 +35,16 @@ export function SaveOrder() {
       });
 
       const data = await res.json();
-      if (!res.ok) toast(data.error || "Something went wrong");
+      if (!res.ok) return toast("Υπήρξε κάποιο πρόβλημα στη καταχωρήση της παραγγελίας.");
 
-      toast(`Παραγγελία δημιουργήθηκε και καταχωρήθηκε με id: ${data.quoteId}`);
+      if (data.quoteId) {
+        toast(`Παραγγελία δημιουργήθηκε και καταχωρήθηκε με id: ${data.quoteId}`);
+        clearCart();
+        router.push(paths.products.href);
+      }
     } catch (error) {
       console.error("Form submission error", error);
-      toast.error("Failed to submit the form. Please try again.");
+      if (error) toast.error("Failed to submit the form. Please try again.");
     } finally {
       setLoading(false);
     }
@@ -150,7 +157,7 @@ export function SaveOrder() {
           </div>
         </div>
 
-        <Button disabled={loading} type="submit">
+        <Button disabled={loading || !products.length} type="submit">
           {loading ? "Αποθήκευση Παραγγελίας..." : "Αποστολή Παραγγελίας"}
         </Button>
       </form>
