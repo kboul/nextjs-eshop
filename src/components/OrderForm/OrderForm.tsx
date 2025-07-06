@@ -1,31 +1,45 @@
 "use client";
 
+import { useState } from "react";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
 import { toast } from "sonner";
 
-import { Form, FormControl, FormDescription, FormField, FormItem, FormLabel, FormMessage } from "@/components/ui/form";
+import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "@/components/ui/form";
 import { Input } from "../ui/input";
 import { formSchema } from "./form";
 import { Button } from "../ui/button";
+import { useCartStore } from "@/store";
 
 export function OrderForm() {
+  const { products } = useCartStore();
+
+  const [loading, setLoading] = useState(false);
+
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema)
   });
 
-  const onSubmit = (values: z.infer<typeof formSchema>) => {
+  const onSubmit = async (values: z.infer<typeof formSchema>) => {
+    setLoading(true);
+
     try {
-      console.log(values);
-      toast(
-        <pre className="mt-2 w-[340px] rounded-md bg-slate-950 p-4">
-          <code className="text-white">{JSON.stringify(values, null, 2)}</code>
-        </pre>
-      );
+      const res = await fetch("/api/saveOrder", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ ...values, products })
+      });
+
+      const data = await res.json();
+      if (!res.ok) toast(data.error || "Something went wrong");
+
+      toast(`Order created with id: ${data.quoteId}`);
     } catch (error) {
       console.error("Form submission error", error);
       toast.error("Failed to submit the form. Please try again.");
+    } finally {
+      setLoading(false);
     }
   };
 
@@ -136,7 +150,9 @@ export function OrderForm() {
           </div>
         </div>
 
-        <Button type="submit">Αποστολή Παραγγελίας</Button>
+        <Button disabled={loading} type="submit">
+          {loading ? "Αποθήκευση Παραγγελίας..." : "Αποστολή Παραγγελίας"}
+        </Button>
       </form>
     </Form>
   );
