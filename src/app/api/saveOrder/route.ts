@@ -29,7 +29,10 @@ export async function POST(request: NextRequest) {
       line_items: products.map((item: any) => ({
         price_data: {
           currency: "eur",
-          product: item.id,
+          product_data: {
+            name: item.name,
+            metadata: { original_product_id: item.id }
+          },
           unit_amount: Math.round(item.price * item.quantity * 100) // Total price in cents
         },
         quantity: 1 // Always 1 since we're calculating total price above
