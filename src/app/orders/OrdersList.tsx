@@ -41,7 +41,7 @@ export default function OrdersList() {
         {orders.map((order) => (
           <Card key={order.id} className="shadow-md hover:shadow-lg transition-shadow">
             <CardHeader>
-              <CardTitle className="text-lg">Id Παραγγελίας: {order.id}</CardTitle>
+              <CardTitle className="text-lg truncate-order-id">Id Παραγγελίας: {order.id}</CardTitle>
             </CardHeader>
             <CardContent>
               <p>
