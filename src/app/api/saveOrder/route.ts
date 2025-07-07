@@ -5,8 +5,6 @@ export async function POST(request: NextRequest) {
   try {
     const { products, name, lastName, address, shopName, phoneNumber, tin, email } = await request.json();
 
-    console.log("Received order:", { products, name, lastName });
-
     // Find existing customer by email or TIN
     const customers = await stripe.customers.list({
       limit: 1,
