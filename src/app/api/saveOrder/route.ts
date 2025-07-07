@@ -30,7 +30,7 @@ export async function POST(request: NextRequest) {
           product: item.id,
           unit_amount: Math.round(item.price * item.quantity * 100) // Total price in cents
         },
-        quantity: 1 // Always 1 since we're calculating total price above
+        quantity: item.quantity
       })),
       metadata: {
         customerName: `${name} ${lastName}`,
