@@ -7,6 +7,7 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/com
 import { Badge } from "@/components/ui/badge";
 import { ResponsiveDialog } from "@/components/ui/responsive-dialog";
 import { Separator } from "@/components/ui/separator";
+import { ScrollArea } from "@/components/ui/scroll-area";
 
 const getStatusBadge = (status: string) => {
   switch (status) {
@@ -80,76 +81,78 @@ export default function OrdersList() {
           open={!!selectedOrder}
           title="Λεπτομέρειες Παραγγελίας">
           {selectedOrder ? (
-            <div className="space-y-4 mt-4">
-              <div>
-                <p>
-                  <strong>Κωδικός:</strong> {selectedOrder.id}
-                </p>
-                <p>
-                  <strong>Κατάσταση:</strong> {getStatusBadge(selectedOrder.status)}
-                </p>
-                <p>
-                  <strong>Σύνολο:</strong> €{(selectedOrder.amount_total / 100).toFixed(2)}
-                </p>
-                <p>
-                  <strong>Δημιουργήθηκε:</strong> {new Date(selectedOrder.created * 1000).toLocaleString()}
-                </p>
-              </div>
-
-              <Separator />
-
-              {selectedOrder.metadata && (
-                <div className="mt-6 space-y-1 text-sm">
-                  <h5 className="font-semibold text-base mb-2">Πληροφορίες Πελάτη</h5>
-                  <p>
-                    <strong>Πελάτης:</strong> {selectedOrder.metadata.customerName}
-                  </p>
-                  <p>
-                    <strong>Τηλέφωνο:</strong> {selectedOrder.metadata.phoneNumber}
-                  </p>
-                  <p>
-                    <strong>Κατάστημα:</strong> {selectedOrder.metadata.shopName}
-                  </p>
-                  <p>
-                    <strong>ΑΦΜ:</strong> {selectedOrder.metadata.tin}
-                  </p>
-                  <p>
-                    <strong>Διεύθυνση:</strong> {selectedOrder.metadata.address}
-                  </p>
-                </div>
-              )}
-
-              <Separator />
-
-              {selectedOrder.line_items && selectedOrder.line_items.data.length > 0 ? (
+            <ScrollArea className="max-h-[70vh] pr-2">
+              <div className="space-y-4 mt-4">
                 <div>
-                  <div className="grid grid-cols-4 gap-2 font-semibold text-sm border-b pb-1">
-                    <span>Προιόν</span>
-                    <span className="text-center">Ποσότητα</span>
-                    <span className="text-center"> Τιμή Μονάδας</span>
-                    <span className="text-right">Ποσό</span>
-                  </div>
-                  {selectedOrder.line_items.data.map((item) => (
-                    <div key={item.id} className="grid grid-cols-4 gap-2 text-sm py-1 border-b last:border-none">
-                      <span>{item.description}</span>
-                      <span className="text-center">{item.quantity}</span>
-                      <span className="text-center">€{(item.amount_total / 100).toFixed(2)}</span>
-                      <span className="text-right">
-                        €{((item.amount_total * (item.quantity ?? 0)) / 100).toFixed(2)}
-                      </span>
-                    </div>
-                  ))}
-
-                  {/* Total Row */}
-                  <div className="grid grid-cols-4 gap-2 text-sm font-semibold pt-2 mt-2">
-                    <span className="col-span-3 text-right">Σύνολο</span>
-                    <span className="text-right">€{(selectedOrder.amount_total / 100).toFixed(2)}</span>
-                  </div>
+                  <p>
+                    <strong>Κωδικός:</strong> {selectedOrder.id}
+                  </p>
+                  <p>
+                    <strong>Κατάσταση:</strong> {getStatusBadge(selectedOrder.status)}
+                  </p>
+                  <p>
+                    <strong>Σύνολο:</strong> €{(selectedOrder.amount_total / 100).toFixed(2)}
+                  </p>
+                  <p>
+                    <strong>Δημιουργήθηκε:</strong> {new Date(selectedOrder.created * 1000).toLocaleString()}
+                  </p>
                 </div>
-              ) : (
-                <p>Δεν βρέθηκαν στοιχεία παραγγελίας.</p>
-              )}
-            </div>
+
+                <Separator />
+
+                {selectedOrder.metadata && (
+                  <div className="mt-6 space-y-1 text-sm">
+                    <h5 className="font-semibold text-base mb-2">Πληροφορίες Πελάτη</h5>
+                    <p>
+                      <strong>Πελάτης:</strong> {selectedOrder.metadata.customerName}
+                    </p>
+                    <p>
+                      <strong>Τηλέφωνο:</strong> {selectedOrder.metadata.phoneNumber}
+                    </p>
+                    <p>
+                      <strong>Κατάστημα:</strong> {selectedOrder.metadata.shopName}
+                    </p>
+                    <p>
+                      <strong>ΑΦΜ:</strong> {selectedOrder.metadata.tin}
+                    </p>
+                    <p>
+                      <strong>Διεύθυνση:</strong> {selectedOrder.metadata.address}
+                    </p>
+                  </div>
+                )}
+
+                <Separator />
+
+                {selectedOrder.line_items && selectedOrder.line_items.data.length > 0 ? (
+                  <div>
+                    <div className="grid grid-cols-4 gap-2 font-semibold text-sm border-b pb-1">
+                      <span>Προιόν</span>
+                      <span className="text-center">Ποσότητα</span>
+                      <span className="text-center"> Τιμή Μονάδας</span>
+                      <span className="text-right">Ποσό</span>
+                    </div>
+                    {selectedOrder.line_items.data.map((item) => (
+                      <div key={item.id} className="grid grid-cols-4 gap-2 text-sm py-1 border-b last:border-none">
+                        <span>{item.description}</span>
+                        <span className="text-center">{item.quantity}</span>
+                        <span className="text-center">€{(item.amount_total / 100).toFixed(2)}</span>
+                        <span className="text-right">
+                          €{((item.amount_total * (item.quantity ?? 0)) / 100).toFixed(2)}
+                        </span>
+                      </div>
+                    ))}
+
+                    {/* Total Row */}
+                    <div className="grid grid-cols-4 gap-2 text-sm font-semibold pt-2 mt-2">
+                      <span className="col-span-3 text-right">Σύνολο</span>
+                      <span className="text-right">€{(selectedOrder.amount_total / 100).toFixed(2)}</span>
+                    </div>
+                  </div>
+                ) : (
+                  <p>Δεν βρέθηκαν στοιχεία παραγγελίας.</p>
+                )}
+              </div>
+            </ScrollArea>
           ) : (
             <p>Φόρτωση Παραγγελίας...</p>
           )}
