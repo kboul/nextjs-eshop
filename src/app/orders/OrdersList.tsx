@@ -6,6 +6,7 @@ import Stripe from "stripe";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { ResponsiveDialog } from "@/components/ui/responsive-dialog";
+import { Separator } from "@/components/ui/separator";
 
 const getStatusBadge = (status: string) => {
   switch (status) {
@@ -95,6 +96,8 @@ export default function OrdersList() {
                 </p>
               </div>
 
+              <Separator />
+
               {selectedOrder.metadata && (
                 <div className="mt-6 space-y-1 text-sm">
                   <h5 className="font-semibold text-base mb-2">Πληροφορίες Πελάτη</h5>
@@ -115,6 +118,8 @@ export default function OrdersList() {
                   </p>
                 </div>
               )}
+
+              <Separator />
 
               {selectedOrder.line_items && selectedOrder.line_items.data.length > 0 ? (
                 <div>
