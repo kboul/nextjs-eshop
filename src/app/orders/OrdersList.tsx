@@ -3,7 +3,7 @@
 import { useEffect, useState } from "react";
 import Stripe from "stripe";
 
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 
 const getStatusBadge = (status: string) => {
@@ -25,23 +25,32 @@ const getStatusBadge = (status: string) => {
 
 export default function OrdersList() {
   const [orders, setOrders] = useState<Stripe.Quote[]>([]);
+  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     fetch("/api/orders")
       .then((res) => res.json())
-      .then((data) => setOrders(data.orders.data));
+      .then((data) => {
+        setOrders(data.orders.data);
+        setLoading(false);
+      })
+      .catch(() => setLoading(false));
   }, []);
 
   console.log(orders);
 
+  if (loading) return <p>Φόρτωση παραγγελιών...</p>;
+  if (orders.length === 0) return <p className="text-center text-gray-500">Δεν έχετε παραγγελίες ακόμη.</p>;
+
   return (
     <div className="p-4">
-      <h1 className="text-xl font-bold mb-4">Your Orders</h1>
+      <h1 className="text-xl font-bold mb-4">Οι παραγγελίες σας</h1>
       <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4">
         {orders.map((order) => (
           <Card key={order.id} className="shadow-md hover:shadow-lg transition-shadow">
             <CardHeader>
-              <CardTitle className="text-lg truncate-order-id">Id Παραγγελίας: {order.id}</CardTitle>
+              <CardTitle className="text-lg">Κωδικός Παραγγελίας:</CardTitle>
+              <CardDescription className="truncate-order-id"> {order.id}</CardDescription>
             </CardHeader>
             <CardContent>
               <p>
