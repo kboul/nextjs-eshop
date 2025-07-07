@@ -2,7 +2,8 @@
 
 import { useEffect, useState } from "react";
 import Stripe from "stripe";
-import { Check, X } from "lucide-react";
+import { Check, Send, X } from "lucide-react";
+import { toast } from "sonner";
 
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
@@ -15,13 +16,13 @@ import { Tooltip } from "@/components/ui/tooltip";
 const getStatusBadge = (status: string) => {
   switch (status) {
     case "accepted":
-      return <Badge className="bg-green-100 text-green-800">Εγκρίθηκε</Badge>;
+      return <Badge className="bg-green-100 text-green-800">Ολοκληρώθηκε</Badge>;
     case "open":
       return <Badge className="bg-blue-100 text-blue-800">Σε εξέλιξη</Badge>;
     case "expired":
       return <Badge className="bg-red-100 text-red-800">Έληξε</Badge>;
     case "draft":
-      return <Badge className="bg-gray-100 text-gray-800">Πρόχειρο</Badge>;
+      return <Badge className="bg-gray-100 text-gray-800">Σε επεξεργασία</Badge>;
     case "canceled":
       return <Badge variant="destructive">Ακυρώθηκε</Badge>;
     default:
@@ -29,7 +30,12 @@ const getStatusBadge = (status: string) => {
   }
 };
 
+const mapOrderMessage = (orderAction: OrderAction) => {
+  return { finalize: "στάλθηκε", accept: "ολοκληρώθηκε", cancel: "ακυρώθηκε" }[orderAction];
+};
+
 type LocalState = { orders: Stripe.Quote[]; loading: boolean; selectedOrder: Stripe.Quote | null };
+type OrderAction = "finalize" | "accept" | "cancel";
 
 export default function OrdersList() {
   const [state, setState] = useState<LocalState>({
@@ -46,6 +52,29 @@ export default function OrdersList() {
       })
       .catch(() => setState((prevState) => ({ ...prevState, loading: false })));
   }, []);
+
+  async function handleAction(
+    e: React.MouseEvent<HTMLButtonElement, MouseEvent>,
+    action: OrderAction,
+    quoteId: string
+  ) {
+    e.stopPropagation();
+    try {
+      const res = await fetch(`/api/orders/${action}`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ quoteId })
+      });
+
+      const data = await res.json();
+      if (data.success) {
+        toast.success(`Παραγγελία ${mapOrderMessage(action)} επιτυχώς!`);
+        window.location.reload(); // simple way to refresh
+      } else toast.error(`Σφάλμα: ${data.error}`);
+    } catch (error) {
+      alert("Κάτι πήγε στραβά.");
+    }
+  }
 
   const { orders, loading, selectedOrder } = state;
   console.log(state);
@@ -77,29 +106,46 @@ export default function OrdersList() {
 
               {order.status !== "canceled" && (
                 <div className="flex gap-2 mt-2">
-                  <Tooltip
-                    Trigger={
-                      <Button
-                        onClick={() => {}}
-                        className="bg-green-600 hover:bg-green-700 text-white text-sm sm:text-xs whitespace-nowrap">
-                        <Check className="w-4 h-4" />
-                        <span className="hidden xs:inline">Ολοκλήρωση</span>
-                      </Button>
-                    }>
-                    Ολοκλήρωση Παραγγελίας
-                  </Tooltip>
-                  <Tooltip
-                    Trigger={
-                      <Button
-                        variant="destructive"
-                        className="text-sm hover:bg-red-700 sm:text-xs whitespace-nowrap"
-                        onClick={() => {}}>
-                        <X className="w-4 h-4 " />
-                        <span className="hidden xs:inline">Ακύρωση</span>
-                      </Button>
-                    }>
-                    Ακύρωση Παραγγελίας
-                  </Tooltip>
+                  {order.status === "draft" && (
+                    <Tooltip
+                      Trigger={
+                        <Button
+                          className="bg-green-600 hover:bg-green-700 text-white text-sm sm:text-xs whitespace-nowrap"
+                          onClick={(e) => handleAction(e, "finalize", order.id)}>
+                          <Send className="w-4 h-4" />
+                          <span className="hidden xs:inline">Στάλθηκε</span>
+                        </Button>
+                      }>
+                      Παραγγελία Στάλθηκε
+                    </Tooltip>
+                  )}
+                  {order.status === "open" && (
+                    <Tooltip
+                      Trigger={
+                        <Button
+                          className="bg-green-600 hover:bg-green-700 text-white text-sm sm:text-xs whitespace-nowrap"
+                          onClick={(e) => handleAction(e, "accept", order.id)}>
+                          <Check className="w-4 h-4" />
+                          <span className="hidden xs:inline">Ολοκλήρωση</span>
+                        </Button>
+                      }>
+                      Ολοκλήρωση Παραγγελίας
+                    </Tooltip>
+                  )}
+                  {order.status !== "accepted" && (
+                    <Tooltip
+                      Trigger={
+                        <Button
+                          variant="destructive"
+                          className="text-sm hover:bg-red-700 sm:text-xs whitespace-nowrap"
+                          onClick={(e) => handleAction(e, "cancel", order.id)}>
+                          <X className="w-4 h-4 " />
+                          <span className="hidden xs:inline">Ακύρωση</span>
+                        </Button>
+                      }>
+                      Ακύρωση Παραγγελίας
+                    </Tooltip>
+                  )}
                 </div>
               )}
             </CardContent>

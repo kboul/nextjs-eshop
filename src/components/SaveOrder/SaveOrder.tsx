@@ -38,7 +38,7 @@ export function SaveOrder() {
       if (!res.ok) return toast("Υπήρξε κάποιο πρόβλημα στη καταχωρήση της παραγγελίας.");
 
       if (data.quoteId) {
-        toast(`Παραγγελία δημιουργήθηκε και καταχωρήθηκε με id: ${data.quoteId}`);
+        toast.success(`Παραγγελία δημιουργήθηκε και καταχωρήθηκε με id: ${data.quoteId}`);
         clearCart();
         router.push(paths.products.href);
       }
