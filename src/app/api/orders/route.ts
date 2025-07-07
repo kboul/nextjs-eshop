@@ -4,7 +4,7 @@ import { stripe } from "@/utils";
 
 export async function GET() {
   try {
-    const orders = await stripe.quotes.list({ limit: 10 });
+    const orders = await stripe.quotes.list({ limit: 10, expand: ["data.line_items"] });
     return NextResponse.json({ orders });
   } catch (error) {
     console.error(error);
