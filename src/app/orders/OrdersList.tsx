@@ -2,12 +2,15 @@
 
 import { useEffect, useState } from "react";
 import Stripe from "stripe";
+import { Check, X } from "lucide-react";
 
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { ResponsiveDialog } from "@/components/ui/responsive-dialog";
 import { Separator } from "@/components/ui/separator";
 import { ScrollArea } from "@/components/ui/scroll-area";
+import { Button } from "@/components/ui/button";
+import { Tooltip } from "@/components/ui/tooltip";
 
 const getStatusBadge = (status: string) => {
   switch (status) {
@@ -71,6 +74,34 @@ export default function OrdersList() {
               <p className="text-sm text-gray-500">
                 Δημιουργήθηκε: {new Date(order.created * 1000).toLocaleDateString()}
               </p>
+
+              {order.status !== "canceled" && (
+                <div className="flex gap-2 mt-2">
+                  <Tooltip
+                    Trigger={
+                      <Button
+                        onClick={() => {}}
+                        className="bg-green-600 hover:bg-green-700 text-white text-sm sm:text-xs whitespace-nowrap">
+                        <Check className="w-4 h-4" />
+                        <span className="hidden xs:inline">Ολοκλήρωση</span>
+                      </Button>
+                    }>
+                    Ολοκλήρωση Παραγγελίας
+                  </Tooltip>
+                  <Tooltip
+                    Trigger={
+                      <Button
+                        variant="destructive"
+                        className="text-sm hover:bg-red-700 sm:text-xs whitespace-nowrap"
+                        onClick={() => {}}>
+                        <X className="w-4 h-4 " />
+                        <span className="hidden xs:inline">Ακύρωση</span>
+                      </Button>
+                    }>
+                    Ακύρωση Παραγγελίας
+                  </Tooltip>
+                </div>
+              )}
             </CardContent>
           </Card>
         ))}
@@ -127,7 +158,7 @@ export default function OrdersList() {
                   <div>
                     <div className="grid grid-cols-4 gap-2 font-semibold text-sm border-b pb-1">
                       <span>Προιόν</span>
-                      <span className="text-center">Ποσότητα</span>
+                      <span className="text-center">Ποσότητα (κιλά)</span>
                       <span className="text-center"> Τιμή Μονάδας</span>
                       <span className="text-right">Ποσό</span>
                     </div>
