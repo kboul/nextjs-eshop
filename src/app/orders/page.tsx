@@ -1,3 +1,5 @@
+import OrdersList from "./OrdersList";
+
 export default function OrdersPage() {
-  return <div>page</div>;
+  return <OrdersList />;
 }
