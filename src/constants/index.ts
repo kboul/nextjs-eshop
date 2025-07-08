@@ -1,5 +1,7 @@
 const quantityToAddSubtract = 0.5;
 
-export { quantityToAddSubtract };
+const appName = "My Market";
+
+export { appName, quantityToAddSubtract };
 export * from "./paths";
 export * from "./productCategories";

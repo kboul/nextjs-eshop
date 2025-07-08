@@ -8,7 +8,7 @@ import { Badge } from "./ui/badge";
 import { Sheet, SheetContent, SheetTrigger, SheetHeader, SheetTitle } from "@/components/ui/sheet";
 import { useCartStore } from "@/store";
 import { cn } from "@/utils";
-import { paths, pathsWitoutCart } from "@/constants";
+import { appName, paths, pathsWitoutCart } from "@/constants";
 
 const routes = Object.values(pathsWitoutCart);
 
@@ -57,7 +57,7 @@ export function Navbar() {
   return (
     <header className="flex items-center justify-between px-4 py-3 md:px-8">
       <Link href="/">
-        <h1 className="text-xl font-bold">My Market</h1>
+        <h1 className="text-xl font-bold">{appName}</h1>
       </Link>
 
       {/* Burger button only visible on mobile */}

@@ -120,3 +120,17 @@
     @apply bg-background text-foreground;
   }
 }
+
+.truncate-order-id {
+  /* default: no truncation */
+  white-space: normal;
+  max-width: 100%;
+
+  /* truncate between 650px and 1100px */
+  @media (min-width: 600px) and (max-width: 1050px) {
+    white-space: nowrap;
+    max-width: 220px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+}
