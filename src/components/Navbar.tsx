@@ -1,15 +1,15 @@
 "use client";
 
 import Link from "next/link";
-import { LogIn, LogOut, Menu, ShoppingCart } from "lucide-react";
+import { Menu, ShoppingCart } from "lucide-react";
 import { usePathname } from "next/navigation";
 
 import { Badge } from "./ui/badge";
 import { Sheet, SheetContent, SheetTrigger, SheetHeader, SheetTitle } from "@/components/ui/sheet";
+import UserAvatarDropdown from "./UserAvatarDropdown";
 import { useCartStore } from "@/store";
 import { cn } from "@/utils";
 import { appName, paths, pathsWitoutCart } from "@/constants";
-import UserAvatarDropdown from "./UserAvatarDropdown";
 
 const routes = Object.values(pathsWitoutCart);
 
@@ -82,7 +82,7 @@ export function Navbar() {
       </Sheet>
 
       {/* Desktop nav */}
-      <nav className="hidden space-x-6 md:flex">
+      <nav className="hidden md:flex">
         <div className="flex items-center space-x-4">
           <Routes linkClassName="hover:underline" />
           <ShoppingCartIcon cartCount={cartCount} />
