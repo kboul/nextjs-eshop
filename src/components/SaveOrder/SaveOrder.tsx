@@ -12,7 +12,7 @@ import { Button } from "../ui/button";
 import { Input } from "../ui/input";
 import { formSchema } from "./form";
 import { useCartStore } from "@/store";
-import { paths } from "@/constants";
+import { allPaths } from "@/constants";
 
 export function SaveOrder() {
   const { products, clearCart } = useCartStore();
@@ -40,7 +40,7 @@ export function SaveOrder() {
       if (data.quoteId) {
         toast.success(`Παραγγελία δημιουργήθηκε και καταχωρήθηκε με id: ${data.quoteId}`);
         clearCart();
-        router.push(paths.products.href);
+        router.push(allPaths.products.href);
       }
     } catch (error) {
       console.error("Form submission error", error);

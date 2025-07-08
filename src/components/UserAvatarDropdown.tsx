@@ -11,7 +11,7 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger
 } from "@/components/ui/dropdown-menu";
-import { paths } from "@/constants";
+import { allPaths } from "@/constants";
 
 const getUserInitials = (user: any) => {
   if (!user) return null;
@@ -23,10 +23,10 @@ export default function UserAvatarDropdown() {
   const { isSignedIn } = useAuth();
   const { user } = useUser();
 
-  const handleSignIn = () => openSignIn({ afterSignInUrl: paths.products.href });
+  const handleSignIn = () => openSignIn({ afterSignInUrl: allPaths.products.href });
 
   // Optional: redirect after sign out
-  const handleSignOut = () => signOut({ redirectUrl: paths.home.href });
+  const handleSignOut = () => signOut({ redirectUrl: allPaths.home.href });
 
   return (
     <DropdownMenu>

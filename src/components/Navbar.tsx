@@ -9,9 +9,9 @@ import { Sheet, SheetContent, SheetTrigger, SheetHeader, SheetTitle } from "@/co
 import UserAvatarDropdown from "./UserAvatarDropdown";
 import { useCartStore } from "@/store";
 import { cn } from "@/utils";
-import { appName, paths, pathsWitoutCart } from "@/constants";
+import { appName, allPaths, navbarPaths } from "@/constants";
 
-const routes = Object.values(pathsWitoutCart);
+const routes = Object.values(navbarPaths);
 
 const Routes = ({ linkClassName }: { linkClassName: string }) => {
   const pathname = usePathname();
@@ -35,7 +35,7 @@ const Routes = ({ linkClassName }: { linkClassName: string }) => {
 
 function ShoppingCartIcon({ cartCount }: { cartCount: number }) {
   return (
-    <Link href={paths.cart.href} className="relative">
+    <Link href={allPaths.cart.href} className="relative">
       <ShoppingCart size={20} />
       {cartCount > 0 && (
         <span className="absolute md:bottom-2 bottom-3 left-3">

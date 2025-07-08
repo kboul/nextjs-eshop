@@ -7,7 +7,7 @@ import { Minus, Plus, Trash2 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import { useCartStore } from "@/store";
-import { quantityToAddSubtract, paths } from "@/constants";
+import { quantityToAddSubtract, allPaths } from "@/constants";
 
 export default function CartPage() {
   const { products, addProductQuantity, removeProductQuantity, removeProduct, clearCart } = useCartStore();
@@ -19,7 +19,7 @@ export default function CartPage() {
     <div className="mx-auto w-full max-w-7xl p-6">
       <div className="grid grid-cols-1 gap-8">
         <div>
-          <h1 className="text-2xl font-semibold">{paths.cart.label}</h1>
+          <h1 className="text-2xl font-semibold">{allPaths.cart.label}</h1>
           <p className="text-muted-foreground">
             {products.length} προϊόν{products.length === 1 ? "" : "τα"} στο καλάθι σας
           </p>
@@ -97,7 +97,7 @@ export default function CartPage() {
 
       <div className="mt-4 space-y-2">
         <Button className="w-full">
-          <Link href={paths.checkout.href}>{paths.checkout.label}</Link>
+          <Link href={allPaths.checkout.href}>{allPaths.checkout.label}</Link>
         </Button>
 
         <Button className="w-full" onClick={clearCart}>

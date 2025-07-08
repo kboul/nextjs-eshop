@@ -1,4 +1,4 @@
-const paths = {
+const allPaths = {
   home: { href: "/", label: "Αρχική" },
   products: { href: "/products", label: "Προϊόντα" },
   cart: { href: "/cart", label: "Καλάθι Αγορών" },
@@ -6,6 +6,8 @@ const paths = {
   orders: { href: "/orders", label: "Παραγγελίες" }
 };
 
-const pathsWitoutCart = Object.fromEntries(Object.entries(paths).filter(([key]) => key !== "cart"));
+const excludedPaths = ["cart", "checkout"];
 
-export { paths, pathsWitoutCart };
+const navbarPaths = Object.fromEntries(Object.entries(allPaths).filter(([key]) => !excludedPaths.includes(key)));
+
+export { allPaths, navbarPaths };
