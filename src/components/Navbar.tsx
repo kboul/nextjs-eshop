@@ -1,7 +1,7 @@
 "use client";
 
 import Link from "next/link";
-import { Menu, ShoppingCart } from "lucide-react";
+import { LogIn, LogOut, Menu, ShoppingCart } from "lucide-react";
 import { usePathname } from "next/navigation";
 
 import { Badge } from "./ui/badge";
@@ -9,6 +9,7 @@ import { Sheet, SheetContent, SheetTrigger, SheetHeader, SheetTitle } from "@/co
 import { useCartStore } from "@/store";
 import { cn } from "@/utils";
 import { appName, paths, pathsWitoutCart } from "@/constants";
+import UserAvatarDropdown from "./UserAvatarDropdown";
 
 const routes = Object.values(pathsWitoutCart);
 
@@ -63,10 +64,11 @@ export function Navbar() {
       {/* Burger button only visible on mobile */}
       <Sheet>
         <SheetTrigger asChild>
-          <button className="md:hidden flex gap-6">
+          <div className="md:hidden flex gap-3 items-center">
             <ShoppingCartIcon cartCount={cartCount} />
+            <UserAvatarDropdown />
             <Menu size={24} className="cursor-pointer" />
-          </button>
+          </div>
         </SheetTrigger>
 
         <SheetContent side="left" className="w-64">
@@ -81,9 +83,10 @@ export function Navbar() {
 
       {/* Desktop nav */}
       <nav className="hidden space-x-6 md:flex">
-        <Routes linkClassName="hover:underline" />
         <div className="flex items-center space-x-4">
+          <Routes linkClassName="hover:underline" />
           <ShoppingCartIcon cartCount={cartCount} />
+          <UserAvatarDropdown />
         </div>
       </nav>
     </header>
