@@ -8,7 +8,7 @@ export default async function ProductsPage() {
 
   return (
     <>
-      <h1 className="mb-2">Ολα τα προϊόντα</h1>
+      <h1 className="mb-2 text-xl">Ολα τα προϊόντα</h1>
       <ProductsList products={products.data} />
     </>
   );

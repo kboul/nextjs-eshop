@@ -59,8 +59,8 @@ export default function OrdersList() {
   if (orders.length === 0) return <p className="text-center text-gray-500">Δεν έχετε παραγγελίες ακόμη.</p>;
 
   return (
-    <div className="p-4">
-      <h1 className="text-xl font-bold mb-4">Οι παραγγελίες σας</h1>
+    <div className="flex flex-col p-4">
+      <h1 className="text-xl mb-4">Οι παραγγελίες σας</h1>
       <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4">
         {orders.map((order) => (
           <Card
@@ -138,17 +138,13 @@ export default function OrdersList() {
               <div className="space-y-4 mt-4">
                 <div>
                   <p>
-                    <strong>Κωδικός:</strong> {selectedOrder.id}
+                    Κωδικός: <b>{selectedOrder.id}</b>
                   </p>
+                  <p>Κατάσταση: {getStatusBadge(selectedOrder.status)}</p>
                   <p>
-                    <strong>Κατάσταση:</strong> {getStatusBadge(selectedOrder.status)}
+                    Σύνολο: <b>€{(selectedOrder.amount_total / 100).toFixed(2)}</b>
                   </p>
-                  <p>
-                    <strong>Σύνολο:</strong> €{(selectedOrder.amount_total / 100).toFixed(2)}
-                  </p>
-                  <p>
-                    <strong>Δημιουργήθηκε:</strong> {new Date(selectedOrder.created * 1000).toLocaleString()}
-                  </p>
+                  <p>Δημιουργήθηκε: {new Date(selectedOrder.created * 1000).toLocaleString()}</p>
                 </div>
 
                 <Separator />
@@ -157,20 +153,12 @@ export default function OrdersList() {
                   <div className="mt-6 space-y-1 text-sm">
                     <h5 className="font-semibold text-base mb-2">Πληροφορίες Πελάτη</h5>
                     <p>
-                      <strong>Πελάτης:</strong> {selectedOrder.metadata.customerName}
+                      Πελάτης: <b>{selectedOrder.metadata.customerName}</b>
                     </p>
-                    <p>
-                      <strong>Τηλέφωνο:</strong> {selectedOrder.metadata.phoneNumber}
-                    </p>
-                    <p>
-                      <strong>Κατάστημα:</strong> {selectedOrder.metadata.shopName}
-                    </p>
-                    <p>
-                      <strong>ΑΦΜ:</strong> {selectedOrder.metadata.tin}
-                    </p>
-                    <p>
-                      <strong>Διεύθυνση:</strong> {selectedOrder.metadata.address}
-                    </p>
+                    <p>Τηλέφωνο: {selectedOrder.metadata.phoneNumber}</p>
+                    <p>Κατάστημα: {selectedOrder.metadata.shopName}</p>
+                    <p>ΑΦΜ: {selectedOrder.metadata.tin}</p>
+                    <p>Διεύθυνση: {selectedOrder.metadata.address}</p>
                   </div>
                 )}
 
