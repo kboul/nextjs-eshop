@@ -1,6 +1,6 @@
 "use client";
 import { LogIn, LogOut } from "lucide-react";
-import { useAuth, useClerk } from "@clerk/nextjs";
+import { useAuth, useClerk, useUser } from "@clerk/nextjs";
 
 import { Avatar, AvatarFallback } from "@/components/ui/avatar";
 import {
@@ -13,9 +13,15 @@ import {
 } from "@/components/ui/dropdown-menu";
 import { paths } from "@/constants";
 
+const getUserInitials = (user: any) => {
+  if (!user) return null;
+  return `${user.firstName.charAt(0)}${user.lastName.charAt(0)}`.toUpperCase();
+};
+
 export default function UserAvatarDropdown() {
   const { signOut, openSignIn } = useClerk();
   const { isSignedIn } = useAuth();
+  const { user } = useUser();
 
   const handleSignIn = () => openSignIn({ afterSignInUrl: paths.products.href });
 
@@ -26,7 +32,7 @@ export default function UserAvatarDropdown() {
     <DropdownMenu>
       <DropdownMenuTrigger className="focus:outline-none focus:ring-[2px] focus:ring-offset-2 focus:ring-primary rounded-full">
         <Avatar>
-          <AvatarFallback className="cursor-pointer">AB</AvatarFallback>
+          <AvatarFallback className="cursor-pointer">{getUserInitials(user) ?? "AB"}</AvatarFallback>
         </Avatar>
       </DropdownMenuTrigger>
       <DropdownMenuContent>
