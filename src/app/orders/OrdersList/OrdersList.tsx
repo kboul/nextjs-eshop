@@ -1,48 +1,22 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import Stripe from "stripe";
 import { Check, Send, X } from "lucide-react";
 import { toast } from "sonner";
 
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
-import { Badge } from "@/components/ui/badge";
 import { ResponsiveDialog } from "@/components/ui/responsive-dialog";
 import { Separator } from "@/components/ui/separator";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { Button } from "@/components/ui/button";
 import { Tooltip } from "@/components/ui/tooltip";
+import { LocalState, OrderAction } from "./types";
+import { getStatusBadge, getGreekOrderAction } from "./utils";
 
-const getStatusBadge = (status: string) => {
-  switch (status) {
-    case "accepted":
-      return <Badge className="bg-green-100 text-green-800">Ολοκληρώθηκε</Badge>;
-    case "open":
-      return <Badge className="bg-blue-100 text-blue-800">Σε εξέλιξη</Badge>;
-    case "expired":
-      return <Badge className="bg-red-100 text-red-800">Έληξε</Badge>;
-    case "draft":
-      return <Badge className="bg-gray-100 text-gray-800">Σε επεξεργασία</Badge>;
-    case "canceled":
-      return <Badge variant="destructive">Ακυρώθηκε</Badge>;
-    default:
-      return <Badge variant="secondary">{status}</Badge>;
-  }
-};
-
-const mapOrderMessage = (orderAction: OrderAction) => {
-  return { finalize: "στάλθηκε", accept: "ολοκληρώθηκε", cancel: "ακυρώθηκε" }[orderAction];
-};
-
-type LocalState = { orders: Stripe.Quote[]; loading: boolean; selectedOrder: Stripe.Quote | null };
-type OrderAction = "finalize" | "accept" | "cancel";
+const initialState = { orders: [], loading: true, selectedOrder: null };
 
 export default function OrdersList() {
-  const [state, setState] = useState<LocalState>({
-    orders: [],
-    loading: true,
-    selectedOrder: null
-  });
+  const [state, setState] = useState<LocalState>(initialState);
 
   useEffect(() => {
     fetch("/api/orders")
@@ -68,16 +42,18 @@ export default function OrdersList() {
 
       const data = await res.json();
       if (data.success) {
-        toast.success(`Παραγγελία ${mapOrderMessage(action)} επιτυχώς!`);
-        window.location.reload(); // simple way to refresh
-      } else toast.error(`Σφάλμα: ${data.error}`);
+        toast.success(`Παραγγελία ${getGreekOrderAction(action)} επιτυχώς!`);
+        window.location.reload();
+        return;
+      }
+
+      toast.error(`Σφάλμα: ${data.error}`);
     } catch (error) {
       alert("Κάτι πήγε στραβά.");
     }
   }
 
   const { orders, loading, selectedOrder } = state;
-  console.log(state);
 
   if (loading) return <p>Φόρτωση παραγγελιών...</p>;
   if (orders.length === 0) return <p className="text-center text-gray-500">Δεν έχετε παραγγελίες ακόμη.</p>;
