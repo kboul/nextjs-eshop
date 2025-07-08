@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import { ClerkProvider } from "@clerk/nextjs";
 
 import "./globals.css";
 import { Navbar } from "@/components";
@@ -16,12 +17,14 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en">
-      <body className="flex min-h-full flex-col bg-white">
-        <Navbar />
-        <main className="flex-grow container mx-auto px-4 py-8">{children}</main>
-        <Toaster position="top-right" />
-      </body>
-    </html>
+    <ClerkProvider>
+      <html lang="en">
+        <body className="flex min-h-full flex-col bg-white">
+          <Navbar />
+          <main className="flex-grow container mx-auto px-4 py-8">{children}</main>
+          <Toaster position="top-right" />
+        </body>
+      </html>
+    </ClerkProvider>
   );
 }
