@@ -3,6 +3,7 @@
 import { useEffect, useState } from "react";
 import { Check, Send, X } from "lucide-react";
 import { toast } from "sonner";
+import { useUser } from "@clerk/nextjs";
 
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { ResponsiveDialog } from "@/components/ui/responsive-dialog";
@@ -12,17 +13,34 @@ import { Button } from "@/components/ui/button";
 import { Tooltip } from "@/components/ui/tooltip";
 import { LocalState, OrderAction } from "./types";
 import { getStatusBadge, getGreekOrderAction } from "./utils";
+import StatusFilter from "./SelectedOrderFilter";
+import { orderStatuses } from "./constants";
 
-const initialState = { orders: [], loading: true, selectedOrder: null };
+const initialState = {
+  orders: [],
+  filteredOrders: [],
+  loading: true,
+  selectedOrder: null,
+  selectedOrderStatus: "all"
+};
 
 export default function OrdersList() {
+  const { user } = useUser();
+  console.log(user?.primaryEmailAddress?.emailAddress);
+
   const [state, setState] = useState<LocalState>(initialState);
 
   useEffect(() => {
     fetch("/api/orders")
       .then((res) => res.json())
       .then((data) => {
-        setState((prevState) => ({ ...prevState, orders: data.orders.data, loading: false }));
+        const allOrders = data.orders.data;
+        setState((prevState) => ({
+          ...prevState,
+          orders: allOrders,
+          filteredOrders: allOrders,
+          loading: false
+        }));
       })
       .catch(() => setState((prevState) => ({ ...prevState, loading: false })));
   }, []);
@@ -53,16 +71,28 @@ export default function OrdersList() {
     }
   }
 
-  const { orders, loading, selectedOrder } = state;
+  const { filteredOrders, loading, selectedOrder, selectedOrderStatus } = state;
 
   if (loading) return <p>Φόρτωση παραγγελιών...</p>;
-  if (orders.length === 0) return <p className="text-center text-gray-500">Δεν έχετε παραγγελίες ακόμη.</p>;
+  if (filteredOrders.length === 0) return <p className="text-center text-gray-500">Δεν έχετε παραγγελίες ακόμη.</p>;
+
+  const handleFilterChange = (status: string) => {
+    setState((prevState) => ({
+      ...prevState,
+      selectedOrderStatus: status,
+      filteredOrders:
+        status === orderStatuses.all ? prevState.orders : prevState.orders.filter((order) => order.status === status)
+    }));
+  };
 
   return (
     <div className="flex flex-col p-4">
-      <h1 className="text-xl mb-4">Οι παραγγελίες σας</h1>
+      <div className="flex justify-between">
+        <h1 className="text-xl mb-4">Οι παραγγελίες σας</h1>
+        <StatusFilter onSelect={handleFilterChange} status={selectedOrderStatus} />
+      </div>
       <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4">
-        {orders.map((order) => (
+        {filteredOrders.map((order) => (
           <Card
             key={order.id}
             className="shadow-md hover:shadow-lg transition-shadow cursor-pointer"
@@ -80,9 +110,9 @@ export default function OrdersList() {
                 Δημιουργήθηκε: {new Date(order.created * 1000).toLocaleDateString()}
               </p>
 
-              {order.status !== "canceled" && (
+              {order.status !== orderStatuses.canceled && (
                 <div className="flex gap-2 mt-2">
-                  {order.status === "draft" && (
+                  {order.status === orderStatuses.draft && (
                     <Tooltip
                       Trigger={
                         <Button
@@ -95,7 +125,7 @@ export default function OrdersList() {
                       Παραγγελία Στάλθηκε
                     </Tooltip>
                   )}
-                  {order.status === "open" && (
+                  {order.status === orderStatuses.open && (
                     <Tooltip
                       Trigger={
                         <Button
@@ -108,7 +138,7 @@ export default function OrdersList() {
                       Ολοκλήρωση Παραγγελίας
                     </Tooltip>
                   )}
-                  {order.status !== "accepted" && (
+                  {order.status !== orderStatuses.accepted && (
                     <Tooltip
                       Trigger={
                         <Button
