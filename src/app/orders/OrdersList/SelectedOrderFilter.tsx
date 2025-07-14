@@ -7,6 +7,7 @@ import {
 } from "@/components/ui/dropdown-menu";
 import { orderStatuses } from "./constants";
 import { getGreekOrderFilterStatus } from "./utils";
+import { cn } from "@/utils";
 
 export default function StatusFilter({ onSelect, status }: { onSelect: (status: string) => void; status: string }) {
   return (
@@ -15,8 +16,12 @@ export default function StatusFilter({ onSelect, status }: { onSelect: (status: 
         <Button variant="outline">{getGreekOrderFilterStatus(status)}</Button>
       </DropdownMenuTrigger>
       <DropdownMenuContent>
-        {Object.keys(orderStatuses).map((status) => (
-          <DropdownMenuItem onClick={() => onSelect(status)}>{getGreekOrderFilterStatus(status)}</DropdownMenuItem>
+        {Object.keys(orderStatuses).map((ordrerStatus) => (
+          <DropdownMenuItem
+            className={cn(status === ordrerStatus ? "font-bold " : "")}
+            onClick={() => onSelect(ordrerStatus)}>
+            {getGreekOrderFilterStatus(ordrerStatus)}
+          </DropdownMenuItem>
         ))}
       </DropdownMenuContent>
     </DropdownMenu>
