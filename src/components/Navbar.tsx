@@ -3,21 +3,28 @@
 import Link from "next/link";
 import { Menu, ShoppingCart } from "lucide-react";
 import { usePathname } from "next/navigation";
+import { useUser } from "@clerk/nextjs";
 
 import { Badge } from "./ui/badge";
 import { Sheet, SheetContent, SheetTrigger, SheetHeader, SheetTitle } from "@/components/ui/sheet";
 import UserAvatarDropdown from "./UserAvatarDropdown";
 import { useCartStore } from "@/store";
-import { cn } from "@/utils";
+import { cn, getAdminEmails, getIsAdmin } from "@/utils";
 import { appName, allPaths, navbarPaths } from "@/constants";
 
 const routes = Object.values(navbarPaths);
 
 const Routes = ({ linkClassName }: { linkClassName: string }) => {
   const pathname = usePathname();
+  const { isSignedIn, user } = useUser();
+
+  const adminEmails = getAdminEmails();
+  const isAdmin = getIsAdmin(isSignedIn, user, adminEmails);
 
   return routes.map(({ href, label }) => {
     const isActive = pathname === href;
+
+    if (label === allPaths.orders.label && !isAdmin) return null;
     return (
       <Link
         className={cn(
