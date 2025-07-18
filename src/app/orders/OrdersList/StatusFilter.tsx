@@ -19,6 +19,7 @@ export default function StatusFilter({ onSelect, status }: { onSelect: (status: 
         {Object.keys(orderStatuses).map((ordrerStatus) => (
           <DropdownMenuItem
             className={cn(status === ordrerStatus ? "font-bold " : "")}
+            key={ordrerStatus}
             onClick={() => onSelect(ordrerStatus)}>
             {getGreekOrderFilterStatus(ordrerStatus)}
           </DropdownMenuItem>

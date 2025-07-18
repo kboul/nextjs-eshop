@@ -1,5 +1,6 @@
 import { NextRequest, NextResponse } from "next/server";
 import { stripe } from "@/utils";
+import { CartProduct } from "@/store";
 
 export async function POST(request: NextRequest) {
   try {
@@ -24,7 +25,7 @@ export async function POST(request: NextRequest) {
 
     const quote = await stripe.quotes.create({
       customer: customer.id,
-      line_items: products.map((item: any) => ({
+      line_items: products.map((item: CartProduct) => ({
         price_data: {
           currency: "eur",
           product: item.id,

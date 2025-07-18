@@ -1,4 +1,5 @@
 "use client";
+
 import { LogIn, LogOut } from "lucide-react";
 import { useAuth, useClerk, useUser } from "@clerk/nextjs";
 
@@ -13,6 +14,7 @@ import {
 } from "@/components/ui/dropdown-menu";
 import { allPaths } from "@/constants";
 
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
 const getUserInitials = (user: any) => {
   if (!user) return null;
   return `${user.firstName.charAt(0)}${user.lastName.charAt(0)}`.toUpperCase();
