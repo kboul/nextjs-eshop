@@ -6,17 +6,22 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
 import { toast } from "sonner";
 import { useRouter } from "next/navigation"; // Note: next/navigation for App Router
+import { useUser } from "@clerk/nextjs";
+import { Info } from "lucide-react";
 
 import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "../ui/form";
 import { Button } from "../ui/button";
 import { Input } from "../ui/input";
+import { Alert, AlertDescription } from "@/components/ui/alert";
 import { formSchema } from "./form";
 import { useCartStore } from "@/store";
 import { allPaths } from "@/constants";
 
 export function SaveOrder() {
-  const { products, clearCart } = useCartStore();
   const router = useRouter();
+  const { isSignedIn } = useUser();
+
+  const { products, clearCart } = useCartStore();
 
   const [loading, setLoading] = useState(false);
 
@@ -35,7 +40,7 @@ export function SaveOrder() {
       });
 
       const data = await res.json();
-      if (!res.ok) return toast("Υπήρξε κάποιο πρόβλημα στη καταχωρήση της παραγγελίας.");
+      if (!res.ok) return toast.error("Υπήρξε κάποιο πρόβλημα στη καταχωρήση της παραγγελίας.");
 
       if (data.quoteId) {
         toast.success(`Παραγγελία δημιουργήθηκε και καταχωρήθηκε με id: ${data.quoteId}`);
@@ -157,9 +162,16 @@ export function SaveOrder() {
           </div>
         </div>
 
-        <Button disabled={loading || !products.length} type="submit">
+        <Button disabled={loading || !products.length || !isSignedIn} type="submit">
           {loading ? "Αποθήκευση Παραγγελίας..." : "Αποστολή Παραγγελίας"}
         </Button>
+
+        {!isSignedIn && (
+          <Alert variant="info">
+            <Info className="h-4 w-4" />
+            <AlertDescription>Παρακαλώ συνδεθείτε πριν ολοκληρώσετε την παραγγελία</AlertDescription>
+          </Alert>
+        )}
       </form>
     </Form>
   );

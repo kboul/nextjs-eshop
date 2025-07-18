@@ -3,7 +3,6 @@
 import { useEffect, useState } from "react";
 import { Check, Send, X } from "lucide-react";
 import { toast } from "sonner";
-import { useUser } from "@clerk/nextjs";
 
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { ResponsiveDialog } from "@/components/ui/responsive-dialog";
@@ -25,9 +24,6 @@ const initialState = {
 };
 
 export default function OrdersList() {
-  const { user } = useUser();
-  console.log(user?.primaryEmailAddress?.emailAddress);
-
   const [state, setState] = useState<LocalState>(initialState);
 
   useEffect(() => {
