@@ -5,7 +5,7 @@ import Stripe from "stripe";
 
 import ProductDetail from "./ProductDetail";
 import { ResponsiveDialog } from "./ui/responsive-dialog";
-import { paths } from "@/constants";
+import { allPaths } from "@/constants";
 
 type ProductModalWrapperProps = { product: Stripe.Product };
 
@@ -17,7 +17,7 @@ export function ProductModalWrapper({ product }: ProductModalWrapperProps) {
   const open = Boolean(match);
 
   return (
-    <ResponsiveDialog onXClick={() => redirect(paths.products.href)} open={open} title={product.name ?? ""}>
+    <ResponsiveDialog onXClick={() => redirect(allPaths.products.href)} open={open} title={product.name ?? ""}>
       <ProductDetail product={product} />
     </ResponsiveDialog>
   );

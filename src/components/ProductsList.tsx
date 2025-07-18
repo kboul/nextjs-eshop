@@ -8,7 +8,7 @@ import Link from "next/link";
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/components/ui/accordion";
 import { Button } from "./ui/button";
 import { getDefaultPrice } from "@/utils";
-import { paths, productCategories } from "@/constants";
+import { allPaths, productCategories } from "@/constants";
 
 type ProductsListProps = { products: Stripe.Product[] };
 
@@ -44,7 +44,7 @@ export default function ProductsList({ products }: ProductsListProps) {
                         <Button
                           size="sm"
                           className="text-white shadow-sm hover:shadow-md transition-all duration-200 rounded-full w-8 h-8 p-0 mr-4">
-                          <Link href={paths.products.href + `/${product.id}`} scroll={false}>
+                          <Link href={allPaths.products.href + `/${product.id}`} scroll={false}>
                             <Plus className="w-4 h-4" />
                           </Link>
                         </Button>

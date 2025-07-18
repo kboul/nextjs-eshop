@@ -6,11 +6,12 @@ import { usePathname } from "next/navigation";
 
 import { Badge } from "./ui/badge";
 import { Sheet, SheetContent, SheetTrigger, SheetHeader, SheetTitle } from "@/components/ui/sheet";
+import UserAvatarDropdown from "./UserAvatarDropdown";
 import { useCartStore } from "@/store";
 import { cn } from "@/utils";
-import { appName, paths, pathsWitoutCart } from "@/constants";
+import { appName, allPaths, navbarPaths } from "@/constants";
 
-const routes = Object.values(pathsWitoutCart);
+const routes = Object.values(navbarPaths);
 
 const Routes = ({ linkClassName }: { linkClassName: string }) => {
   const pathname = usePathname();
@@ -34,8 +35,8 @@ const Routes = ({ linkClassName }: { linkClassName: string }) => {
 
 function ShoppingCartIcon({ cartCount }: { cartCount: number }) {
   return (
-    <Link href={paths.cart.href} className="relative">
-      <ShoppingCart size={20} />
+    <Link href={allPaths.cart.href} className="relative">
+      <ShoppingCart className="mr-3" size={20} />
       {cartCount > 0 && (
         <span className="absolute md:bottom-2 bottom-3 left-3">
           <Badge
@@ -63,10 +64,11 @@ export function Navbar() {
       {/* Burger button only visible on mobile */}
       <Sheet>
         <SheetTrigger asChild>
-          <button className="md:hidden flex gap-6">
+          <div className="md:hidden flex gap-6 items-center">
             <ShoppingCartIcon cartCount={cartCount} />
+            <UserAvatarDropdown />
             <Menu size={24} className="cursor-pointer" />
-          </button>
+          </div>
         </SheetTrigger>
 
         <SheetContent side="left" className="w-64">
@@ -80,10 +82,11 @@ export function Navbar() {
       </Sheet>
 
       {/* Desktop nav */}
-      <nav className="hidden space-x-6 md:flex">
-        <Routes linkClassName="hover:underline" />
-        <div className="flex items-center space-x-4">
+      <nav className="hidden md:flex">
+        <div className="flex items-center space-x-6">
+          <Routes linkClassName="hover:underline" />
           <ShoppingCartIcon cartCount={cartCount} />
+          <UserAvatarDropdown />
         </div>
       </nav>
     </header>
