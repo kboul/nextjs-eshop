@@ -66,7 +66,7 @@ export default function OrdersList() {
       }
 
       toast.error(`Σφάλμα: ${data.error}`);
-    } catch (error) {
+    } catch {
       alert("Κάτι πήγε στραβά.");
     }
   }
