@@ -7,10 +7,12 @@ import { z } from "zod";
 import { toast } from "sonner";
 import { useRouter } from "next/navigation"; // Note: next/navigation for App Router
 import { useUser } from "@clerk/nextjs";
+import { Info } from "lucide-react";
 
 import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "../ui/form";
 import { Button } from "../ui/button";
 import { Input } from "../ui/input";
+import { Alert, AlertDescription } from "@/components/ui/alert";
 import { formSchema } from "./form";
 import { useCartStore } from "@/store";
 import { allPaths } from "@/constants";
@@ -163,6 +165,13 @@ export function SaveOrder() {
         <Button disabled={loading || !products.length || !isSignedIn} type="submit">
           {loading ? "Αποθήκευση Παραγγελίας..." : "Αποστολή Παραγγελίας"}
         </Button>
+
+        {!isSignedIn && (
+          <Alert variant="info">
+            <Info className="h-4 w-4" />
+            <AlertDescription>Παρακαλώ συνδεθείτε πριν ολοκληρώσετε την παραγγελία</AlertDescription>
+          </Alert>
+        )}
       </form>
     </Form>
   );
