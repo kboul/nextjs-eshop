@@ -13,7 +13,7 @@ import { Button } from "@/components/ui/button";
 import { Tooltip } from "@/components/ui/tooltip";
 import { LocalState, OrderAction } from "./types";
 import { getStatusBadge, getGreekOrderAction } from "./utils";
-import StatusFilter from "./SelectedOrderFilter";
+import StatusFilter from "./StatusFilter";
 import { orderStatuses } from "./constants";
 
 const initialState = {
