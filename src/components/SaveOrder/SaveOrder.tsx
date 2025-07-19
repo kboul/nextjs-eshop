@@ -7,7 +7,8 @@ import { z } from "zod";
 import { toast } from "sonner";
 import { useRouter } from "next/navigation"; // Note: next/navigation for App Router
 import { useUser } from "@clerk/nextjs";
-import { Info } from "lucide-react";
+import { ArrowLeft, Info } from "lucide-react";
+import Link from "next/link";
 
 import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "../ui/form";
 import { Button } from "../ui/button";
@@ -58,6 +59,14 @@ export function SaveOrder() {
   return (
     <Form {...form}>
       <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8 max-w-3xl mx-auto py-10">
+        <h1 className="text-xl mb-6">{allPaths.checkout.label}</h1>
+        <Link
+          href={allPaths.cart.href}
+          className="flex items-center gap-2 text-sm text-muted-foreground hover:text-primary transition-colors">
+          <ArrowLeft className="w-4 h-4" />
+          Πίσω στο {allPaths.cart.label}
+        </Link>
+
         <div className="grid grid-cols-12 gap-4">
           <div className="col-span-6">
             <FormField
