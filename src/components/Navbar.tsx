@@ -43,7 +43,7 @@ const Routes = ({ linkClassName }: { linkClassName: string }) => {
 function ShoppingCartIcon({ cartCount }: { cartCount: number }) {
   return (
     <Link href={allPaths.cart.href} className="relative">
-      <ShoppingCart className="mr-3" size={20} />
+      <ShoppingCart className="md:mr-2 mr-5" size={20} />
       {cartCount > 0 && (
         <span className="absolute md:bottom-2 bottom-3 left-3">
           <Badge
@@ -71,10 +71,10 @@ export function Navbar() {
       {/* Burger button only visible on mobile */}
       <Sheet>
         <SheetTrigger asChild>
-          <div className="md:hidden flex gap-6 items-center">
-            <ShoppingCartIcon cartCount={cartCount} />
-            <UserAvatarDropdown />
+          <div className="md:hidden flex gap-3 items-center">
             <Menu size={24} className="cursor-pointer" />
+            <UserAvatarDropdown />
+            <ShoppingCartIcon cartCount={cartCount} />
           </div>
         </SheetTrigger>
 
@@ -90,10 +90,10 @@ export function Navbar() {
 
       {/* Desktop nav */}
       <nav className="hidden md:flex">
-        <div className="flex items-center space-x-6">
+        <div className="flex items-center space-x-3">
           <Routes linkClassName="hover:underline" />
-          <ShoppingCartIcon cartCount={cartCount} />
           <UserAvatarDropdown />
+          <ShoppingCartIcon cartCount={cartCount} />
         </div>
       </nav>
     </header>
