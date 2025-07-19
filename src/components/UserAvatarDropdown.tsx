@@ -2,6 +2,7 @@
 
 import { LogIn, LogOut } from "lucide-react";
 import { useAuth, useClerk, useUser } from "@clerk/nextjs";
+import { usePathname } from "next/navigation";
 
 import { Avatar, AvatarFallback } from "@/components/ui/avatar";
 import {
@@ -24,8 +25,9 @@ export default function UserAvatarDropdown() {
   const { signOut, openSignIn } = useClerk();
   const { isSignedIn } = useAuth();
   const { user } = useUser();
+  const pathname = usePathname();
 
-  const handleSignIn = () => openSignIn({ afterSignInUrl: allPaths.products.href });
+  const handleSignIn = () => openSignIn({ afterSignInUrl: pathname });
 
   // Optional: redirect after sign out
   const handleSignOut = () => signOut({ redirectUrl: allPaths.home.href });
@@ -37,7 +39,7 @@ export default function UserAvatarDropdown() {
           <AvatarFallback className="cursor-pointer">{getUserInitials(user) ?? "AB"}</AvatarFallback>
         </Avatar>
       </DropdownMenuTrigger>
-      <DropdownMenuContent>
+      <DropdownMenuContent onClick={(e) => e.stopPropagation()}>
         <DropdownMenuLabel>O Λογαριασμός Μου</DropdownMenuLabel>
         <DropdownMenuSeparator />
         {/* <DropdownMenuItem>
