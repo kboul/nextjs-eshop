@@ -38,7 +38,7 @@ export default function UserAvatarDropdown() {
         </Avatar>
       </DropdownMenuTrigger>
       <DropdownMenuContent>
-        <DropdownMenuLabel>O Λογαριασμός Μου</DropdownMenuLabel>
+        <DropdownMenuLabel onClick={(e) => e.stopPropagation()}>O Λογαριασμός Μου</DropdownMenuLabel>
         <DropdownMenuSeparator />
         {/* <DropdownMenuItem>
           <User className="h-4 w-4" /> Profile
