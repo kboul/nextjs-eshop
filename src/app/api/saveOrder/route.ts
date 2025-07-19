@@ -38,7 +38,7 @@ export async function POST(request: NextRequest) {
         shopName,
         tin,
         phoneNumber,
-        address: JSON.stringify(address)
+        address
       }
     });
 
