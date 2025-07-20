@@ -10,4 +10,6 @@ type LocalState = {
 
 type OrderAction = "finalize" | "accept" | "cancel";
 
-export type { LocalState, OrderAction };
+type OrderStatus = Stripe.Quote["status"] | "all";
+
+export type { OrderStatus, LocalState, OrderAction };

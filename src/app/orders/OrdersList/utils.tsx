@@ -1,7 +1,7 @@
 import Stripe from "stripe";
 
 import { Badge } from "@/components/ui/badge";
-import { OrderAction } from "./types";
+import { OrderAction, OrderStatus } from "./types";
 import { orderStatuses } from "./constants";
 
 const getStatusBadge = (status: string) => {
@@ -40,4 +40,8 @@ const getOrderTotalAmount = <T extends Stripe.LineItem[]>(data: T): number => {
   }, 0);
 };
 
-export { getOrderTotalAmount, getStatusBadge, getGreekOrderAction, getGreekOrderFilterStatus };
+const getFilteredOrder = (allOrders: Stripe.Quote[], orderStatus: OrderStatus) => {
+  return allOrders.filter((order) => order.status === orderStatus);
+};
+
+export { getFilteredOrder, getOrderTotalAmount, getStatusBadge, getGreekOrderAction, getGreekOrderFilterStatus };

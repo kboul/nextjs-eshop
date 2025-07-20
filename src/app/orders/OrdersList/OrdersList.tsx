@@ -3,6 +3,7 @@
 import { useEffect, useState } from "react";
 import { Check, Send, X } from "lucide-react";
 import { toast } from "sonner";
+import Stripe from "stripe";
 
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { ResponsiveDialog } from "@/components/ui/responsive-dialog";
@@ -10,8 +11,8 @@ import { Separator } from "@/components/ui/separator";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { Button } from "@/components/ui/button";
 import { Tooltip } from "@/components/ui/tooltip";
-import { LocalState, OrderAction } from "./types";
-import { getStatusBadge, getGreekOrderAction, getOrderTotalAmount } from "./utils";
+import { LocalState, OrderAction, OrderStatus } from "./types";
+import { getStatusBadge, getGreekOrderAction, getOrderTotalAmount, getFilteredOrder } from "./utils";
 import StatusFilter from "./StatusFilter";
 import { initialState, orderStatuses } from "./constants";
 
@@ -22,13 +23,15 @@ export default function OrdersList() {
     fetch("/api/orders")
       .then((res) => res.json())
       .then((data) => {
-        const allOrders = data.orders.data;
+        const allOrders: Stripe.Quote[] = data.orders.data;
         setState((prevState) => ({
           ...prevState,
           allOrders,
           filteredOrders: allOrders,
           loading: false
         }));
+        const draftOrders = getFilteredOrder(allOrders, orderStatuses.draft);
+        toast.info(`Έχετε ${draftOrders.length} παραγγελλίες προς επεξεργασία`);
       })
       .catch(() => setState((prevState) => ({ ...prevState, loading: false })));
   }, []);
@@ -71,7 +74,7 @@ export default function OrdersList() {
       filteredOrders:
         status === orderStatuses.all
           ? prevState.allOrders
-          : prevState.allOrders.filter((order) => order.status === status)
+          : getFilteredOrder(prevState.allOrders, status as OrderStatus)
     }));
   };
 

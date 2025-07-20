@@ -1,4 +1,6 @@
-const orderStatuses = {
+import { OrderStatus } from "./types";
+
+const orderStatuses: Record<OrderStatus, OrderStatus> = {
   all: "all",
   accepted: "accepted",
   canceled: "canceled",
