@@ -1,3 +1,5 @@
+import Stripe from "stripe";
+
 import { Badge } from "@/components/ui/badge";
 import { OrderAction } from "./types";
 import { orderStatuses } from "./constants";
@@ -32,4 +34,10 @@ const getGreekOrderFilterStatus = (status: string) =>
     [orderStatuses.open]: "Σε εξέλιξη"
   }[status]);
 
-export { getStatusBadge, getGreekOrderAction, getGreekOrderFilterStatus };
+const getOrderTotalAmount = <T extends Stripe.LineItem[]>(data: T): number => {
+  return data?.reduce((prevValue, currentProduct) => {
+    return prevValue + (currentProduct.price?.unit_amount ?? 0) / 100;
+  }, 0);
+};
+
+export { getOrderTotalAmount, getStatusBadge, getGreekOrderAction, getGreekOrderFilterStatus };

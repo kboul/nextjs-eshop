@@ -1,7 +1,7 @@
 import Stripe from "stripe";
 
 type LocalState = {
-  orders: Stripe.Quote[];
+  allOrders: Stripe.Quote[];
   filteredOrders: Stripe.Quote[];
   loading: boolean;
   selectedOrder: Stripe.Quote | null;

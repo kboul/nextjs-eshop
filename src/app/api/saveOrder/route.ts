@@ -25,13 +25,13 @@ export async function POST(request: NextRequest) {
 
     const quote = await stripe.quotes.create({
       customer: customer.id,
-      line_items: products.map((item: CartProduct) => ({
+      line_items: products.map((product: CartProduct) => ({
         price_data: {
           currency: "eur",
-          product: item.id,
-          unit_amount: Math.round(item.price * item.quantity * 100) // Total price in cents
+          product: product.id,
+          unit_amount: Math.round(product.price * product.quantity * 100) // Total price in cents
         },
-        quantity: item.quantity
+        quantity: product.quantity * 1000 // store it as gramms, thus multipy with 1000, cause it does nto accept decimals
       })),
       metadata: {
         customerName: `${name} ${lastName}`,
@@ -45,6 +45,6 @@ export async function POST(request: NextRequest) {
     return NextResponse.json({ quoteId: quote.id });
   } catch (err) {
     console.error(err);
-    return NextResponse.json({ error: "Error creating order" }, { status: 500 });
+    return NextResponse.json({ error: err }, { status: 500 });
   }
 }
