@@ -1,4 +1,6 @@
-const orderStatuses = {
+import { OrderStatus } from "./types";
+
+const orderStatuses: Record<OrderStatus, OrderStatus> = {
   all: "all",
   accepted: "accepted",
   canceled: "canceled",
@@ -6,4 +8,12 @@ const orderStatuses = {
   open: "open"
 };
 
-export { orderStatuses };
+const initialState = {
+  allOrders: [],
+  filteredOrders: [],
+  loading: true,
+  selectedOrder: null,
+  selectedOrderStatus: orderStatuses.all
+};
+
+export { initialState, orderStatuses };

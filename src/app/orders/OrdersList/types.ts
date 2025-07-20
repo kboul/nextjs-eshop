@@ -1,7 +1,7 @@
 import Stripe from "stripe";
 
 type LocalState = {
-  orders: Stripe.Quote[];
+  allOrders: Stripe.Quote[];
   filteredOrders: Stripe.Quote[];
   loading: boolean;
   selectedOrder: Stripe.Quote | null;
@@ -10,4 +10,6 @@ type LocalState = {
 
 type OrderAction = "finalize" | "accept" | "cancel";
 
-export type { LocalState, OrderAction };
+type OrderStatus = Stripe.Quote["status"] | "all";
+
+export type { OrderStatus, LocalState, OrderAction };

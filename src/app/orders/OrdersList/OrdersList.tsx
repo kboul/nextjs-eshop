@@ -3,6 +3,7 @@
 import { useEffect, useState } from "react";
 import { Check, Send, X } from "lucide-react";
 import { toast } from "sonner";
+import Stripe from "stripe";
 
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { ResponsiveDialog } from "@/components/ui/responsive-dialog";
@@ -10,18 +11,10 @@ import { Separator } from "@/components/ui/separator";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { Button } from "@/components/ui/button";
 import { Tooltip } from "@/components/ui/tooltip";
-import { LocalState, OrderAction } from "./types";
-import { getStatusBadge, getGreekOrderAction } from "./utils";
+import { LocalState, OrderAction, OrderStatus } from "./types";
+import { getStatusBadge, getGreekOrderAction, getOrderTotalAmount, getFilteredOrder } from "./utils";
 import StatusFilter from "./StatusFilter";
-import { orderStatuses } from "./constants";
-
-const initialState = {
-  orders: [],
-  filteredOrders: [],
-  loading: true,
-  selectedOrder: null,
-  selectedOrderStatus: "all"
-};
+import { initialState, orderStatuses } from "./constants";
 
 export default function OrdersList() {
   const [state, setState] = useState<LocalState>(initialState);
@@ -30,13 +23,15 @@ export default function OrdersList() {
     fetch("/api/orders")
       .then((res) => res.json())
       .then((data) => {
-        const allOrders = data.orders.data;
+        const allOrders: Stripe.Quote[] = data.orders.data;
         setState((prevState) => ({
           ...prevState,
-          orders: allOrders,
+          allOrders,
           filteredOrders: allOrders,
           loading: false
         }));
+        const draftOrders = getFilteredOrder(allOrders, orderStatuses.draft);
+        toast.info(`Έχετε ${draftOrders.length} παραγγελλίες προς επεξεργασία`);
       })
       .catch(() => setState((prevState) => ({ ...prevState, loading: false })));
   }, []);
@@ -77,7 +72,9 @@ export default function OrdersList() {
       ...prevState,
       selectedOrderStatus: status,
       filteredOrders:
-        status === orderStatuses.all ? prevState.orders : prevState.orders.filter((order) => order.status === status)
+        status === orderStatuses.all
+          ? prevState.allOrders
+          : getFilteredOrder(prevState.allOrders, status as OrderStatus)
     }));
   };
 
@@ -88,7 +85,7 @@ export default function OrdersList() {
         <StatusFilter onSelect={handleFilterChange} status={selectedOrderStatus} />
       </div>
       <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4">
-        {filteredOrders.map((order) => (
+        {filteredOrders.map((order, index) => (
           <Card
             key={order.id}
             className="shadow-md hover:shadow-lg transition-shadow cursor-pointer"
@@ -101,11 +98,10 @@ export default function OrdersList() {
               <p>
                 Κατάσταση: <span className="capitalize">{getStatusBadge(order.status)}</span>
               </p>
-              <p>Σύνολο: €{(order.amount_total / 100).toFixed(2)}</p>
+              <p>Σύνολο: €{getOrderTotalAmount(filteredOrders[index]?.line_items?.data ?? [])}</p>
               <p className="text-sm text-gray-500">
                 Δημιουργήθηκε: {new Date(order.created * 1000).toLocaleDateString()}
               </p>
-
               {order.status !== orderStatuses.canceled && (
                 <div className="flex gap-2 mt-2">
                   {order.status === orderStatuses.draft && (
@@ -154,6 +150,7 @@ export default function OrdersList() {
           </Card>
         ))}
       </div>
+
       {selectedOrder && (
         <ResponsiveDialog
           onXClick={() => setState((prevState) => ({ ...prevState, selectedOrder: null }))}
@@ -167,9 +164,6 @@ export default function OrdersList() {
                     Κωδικός: <b>{selectedOrder.id}</b>
                   </p>
                   <p>Κατάσταση: {getStatusBadge(selectedOrder.status)}</p>
-                  <p>
-                    Σύνολο: <b>€{(selectedOrder.amount_total / 100).toFixed(2)}</b>
-                  </p>
                   <p>Δημιουργήθηκε: {new Date(selectedOrder.created * 1000).toLocaleString()}</p>
                 </div>
 
@@ -198,21 +192,24 @@ export default function OrdersList() {
                       <span className="text-center"> Τιμή Μονάδας</span>
                       <span className="text-right">Ποσό</span>
                     </div>
-                    {selectedOrder.line_items.data.map((item) => (
-                      <div key={item.id} className="grid grid-cols-4 gap-2 text-sm py-1 border-b last:border-none">
-                        <span>{item.description}</span>
-                        <span className="text-center">{item.quantity}</span>
-                        <span className="text-center">€{(item.amount_total / 100).toFixed(2)}</span>
-                        <span className="text-right">
-                          €{((item.amount_total * (item.quantity ?? 0)) / 100).toFixed(2)}
-                        </span>
-                      </div>
-                    ))}
+                    {selectedOrder.line_items.data.map((item) => {
+                      const quantity = item.quantity ? item.quantity / 1000 : 0;
+                      const productTotalAmount = item?.price?.unit_amount ? item?.price?.unit_amount / 100 : 0;
+                      const unitAmount = productTotalAmount / quantity;
+                      return (
+                        <div key={item.id} className="grid grid-cols-4 gap-2 text-sm py-1 border-b last:border-none">
+                          <span>{item.description}</span>
+                          <span className="text-center">{quantity}</span>
+                          <span className="text-center">€{unitAmount}</span>
+                          <span className="text-right">€{quantity * unitAmount}</span>
+                        </div>
+                      );
+                    })}
 
                     {/* Total Row */}
                     <div className="grid grid-cols-4 gap-2 text-sm font-semibold pt-2 mt-2">
                       <span className="col-span-3 text-right">Σύνολο</span>
-                      <span className="text-right">€{(selectedOrder.amount_total / 100).toFixed(2)}</span>
+                      <span className="text-right">€{getOrderTotalAmount(selectedOrder?.line_items?.data)}</span>
                     </div>
                   </div>
                 ) : (
